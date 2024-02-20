@@ -11,6 +11,7 @@ function EventsCalendar(){
             start: new Date(2024, 1, 8, 12, 30),
             end: new Date(2024, 1, 8, 14, 30),
             title: "Meeting with Gavin from Acute Training Solutions - Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborumnumquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium",
+            // prompt the user to click a new link for more information about the course
             location: "Bute Street"
         }
     ];
