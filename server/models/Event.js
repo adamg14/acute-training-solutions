@@ -4,7 +4,7 @@ const trainerModel = require("./Trainer");
 const employeeModel = require("./Employee");
 
 // connection string
-mongoose.connect();
+mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
 
 const eventSchema = mongoose.Schema({
     eventId: {
@@ -18,12 +18,12 @@ const eventSchema = mongoose.Schema({
     },
 
     course: {
-        type: [courseModel],
+        type: [String],
         required: true
     },
 
     trainer: {
-        type: [trainerModel],
+        type: [String],
         required: true
     },
 
@@ -49,7 +49,7 @@ const eventSchema = mongoose.Schema({
     },
 
     booked: {
-        type: employeeModel
+        type: [String]
     }
 });
 

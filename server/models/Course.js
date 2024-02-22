@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // connection string
-mongoose.connect();
+mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
 
 const courseSchema = mongoose.Schema({
     courseId: {

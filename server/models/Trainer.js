@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const eventModel = require("./Event");
 const courseModel = require("./Course");
 // connection string
-mongoose.connect()
+mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0")
 
 const trainerSchema = mongoose.Schema({
     trainerEmail: {
@@ -13,7 +13,7 @@ const trainerSchema = mongoose.Schema({
 
     // trainer qualificiations must be one of - Nursing home staff, ... - this must be added to validations
     trainerCourse: {
-        type: [courseModel],
+        type: [String],
         required: true
     },
 
@@ -39,7 +39,7 @@ const trainerSchema = mongoose.Schema({
     },
 
     events: {
-        type: [eventModel],
+        type: [String],
     }
 });
 

@@ -9,12 +9,20 @@ const addTrainer = require("./middleware/addTrainer");
 const addTrainerCourse = require("./middleware/addTrainerCourse");
 const assignEvent = require("./middleware/assignEvent");
 const findEvent = require("./middleware/findEvent");
+const registerEmployee = require("./middleware/registerEmployee");
 
 const app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+
+app.post("/register-employee", async (req, res) => {
+    console.log("ROUTE REACHED");
+    const employeeEmail = req.body.employeeEmail;
+    const employeePassword = req.body.employeePassword;
+    const registerEmployeeResult = await registerEmployee(employeeEmail, employeePassword);
+});
 
 app.post("/add-course", async (req, res) => {
     const addCourseResult = await addCourse(req.body.courseId, req.body.courseName, req.body.sharepointURL);

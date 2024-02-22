@@ -5,6 +5,7 @@ import Heading from './components/Heading';
 import EventsCalendar from './components/Calendar';
 import About from './components/About';
 import EmployeeLogin from './components/EmployeeLogin';
+import EmployeeRegister from './components/EmployeeRegister';
 
 // have a portal to render the different users of the application
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<About></About>}></Route>
           <Route path="/about" element={<About></About>}></Route>
           <Route path="/employee-login" element={<EmployeeLogin></EmployeeLogin>}></Route>
+          <Route path="/employee-register" element={<EmployeeRegister></EmployeeRegister>}></Route>
         </Routes>
       </Router>
     </div>
