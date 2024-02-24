@@ -10,20 +10,70 @@ const addTrainerCourse = require("./middleware/addTrainerCourse");
 const assignEvent = require("./middleware/assignEvent");
 const findEvent = require("./middleware/findEvent");
 const registerEmployee = require("./middleware/registerEmployee");
-
+const passwordHashing = require("./middleware/passwordHashing");
+const expressSession = require("express-session");
+const getEmployee = require("./middleware/getEmployee");
+const compareHash = require("./middleware/compareHash");
+const cookieParser = require("cookie-parser");
 const app = express();
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(expressSession({
+    secret: "secret-key",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false
+    }
+}));
+app.use(cookieParser());
+
+function authenticateTrainer(req, res, next) {
+    // add more authentication conditions
+    if (req.session && req.session.role == "trainer") {
+        next();
+    } else {
+        // this redirect may not work
+        res.redirect("/register-employee");
+    }
+}
+
+function authenticateEmployee() {
+    if (req.session && req.session.role == "employee") {
+        next();
+    } else {
+        // this redirect may not work
+        res.redirect("/register-employee");
+    }
+}
+
 
 app.post("/register-employee", async (req, res) => {
-    console.log("ROUTE REACHED");
     const employeeEmail = req.body.employeeEmail;
-    const employeePassword = req.body.employeePassword;
+    const employeePassword = passwordHashing(req.body.employeePassword);
     const registerEmployeeResult = await registerEmployee(employeeEmail, employeePassword);
 });
 
+app.post("/login-employee", async (req, res) => {
+    const employeeEmail = req.body.employeeEmail;
+    const employeePassword = passwordHashing(req.body.employeePassword);
+    const employee = getEmployee(employeeEmail);
+    if (employee && compareHash(employeePassword, employee.employeePassword)) {
+        req.session.user = {
+            role: "employee",
+            username: employee.employeeEmail
+        }
+        res.cookie('sessionId', req.sessionID, { maxAge: 900000, httpOnly: true});
+
+        // redirect the user to the login page
+    } else {
+        res.redirect("/login-employee");
+    }
+});
+
+app.get();
 app.post("/add-course", async (req, res) => {
     const addCourseResult = await addCourse(req.body.courseId, req.body.courseName, req.body.sharepointURL);
     res.send(addCourseResult);
