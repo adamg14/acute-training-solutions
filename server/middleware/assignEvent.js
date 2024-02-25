@@ -6,7 +6,7 @@ const findEvent = require("./findEvent");
 
 async function assignEvent(_eventId, _trainerId, _employeeEmail) {
     try {
-        await mongoose.connect();
+        await mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
 
         const selectedEvent = await findEvent(_eventId);
 

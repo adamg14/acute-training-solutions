@@ -5,8 +5,7 @@ async function addTrainer(_trainerEmail, _trainerCourse, _trainerName, _trainerP
 
     try {
         // connect to the mongoose database
-        await mongoose.connect();
-
+        await mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
         // create a new Trainer object using the function arguments - omit the events field as it will be empty array at the initialisation stage
         const newTrainer = new Trainer({
             trainerEmail: _trainerEmail,

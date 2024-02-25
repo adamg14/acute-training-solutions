@@ -9,16 +9,15 @@ function EmployeeRegister() {
 
     async function handleFormSubmission(event) {
         event.preventDefault();
-        if (passwordInput.toString() !== confirmPasswordInput.toString()) {
+        if (passwordInput.toString() !== confirmPasswordInput.toString() && emailInput.length > 5 && passwordInput.length > 5) {
             document.getElementById("passwordMatchError").removeAttribute("hidden");
         } else {
-            console.log("passwords match");
             const postData = {
                 employeeEmail: emailInput,
                 employeePassword: passwordInput
             };
 
-            await axios.post("http://localhost:4000/register-employee", postData);
+            await axios.post("http://localhost:4000/login-employee", postData);
         }
     }
 

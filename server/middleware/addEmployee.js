@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const Employee = require("../models/Employee");
 
 
-function addEmployee(_employeeEmail, _employeeName){
+async function addEmployee(_employeeEmail, _employeeName){
     try {
 
-        mongoose.connect("");
+        await mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
 
         const addEmployee = new Employee({
             employeeEmail: _employeeEmail,

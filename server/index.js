@@ -58,22 +58,22 @@ app.post("/register-employee", async (req, res) => {
 
 app.post("/login-employee", async (req, res) => {
     const employeeEmail = req.body.employeeEmail;
-    const employeePassword = passwordHashing(req.body.employeePassword);
-    const employee = getEmployee(employeeEmail);
-    if (employee && compareHash(employeePassword, employee.employeePassword)) {
+    const employeePassword = req.body.employeePassword;
+    const employeeDatabaseRecord = await getEmployee(employeeEmail);
+    
+    if (employeeDatabaseRecord[0].employeeEmail.toString() === employeeEmail && compareHash(employeePassword, employeeDatabaseRecord[0].employeePassword.toString())) {
         req.session.user = {
-            role: "employee",
-            username: employee.employeeEmail
-        }
-        res.cookie('sessionId', req.sessionID, { maxAge: 900000, httpOnly: true});
+            email: employeeEmail,
+            role: 'employee'
+        };
 
-        // redirect the user to the login page
+        res.cookie("sessionId", req.sessionID, { maxAge: 900000, httpOnly: true });
+        res.send("valid credentials");
     } else {
-        res.redirect("/login-employee");
+        res.send("invalid credentials");
     }
 });
 
-app.get();
 app.post("/add-course", async (req, res) => {
     const addCourseResult = await addCourse(req.body.courseId, req.body.courseName, req.body.sharepointURL);
     res.send(addCourseResult);

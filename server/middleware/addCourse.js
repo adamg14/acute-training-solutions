@@ -3,7 +3,7 @@ const Course = require("../models/Course");
 
 async function addCourse(_courseId, _courseName, _sharepointURL){
     try {
-        await mongoose.connect();
+        await mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
 
         const newCourse = new Course({
             courseId: _courseId,
