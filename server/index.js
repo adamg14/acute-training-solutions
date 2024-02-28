@@ -101,6 +101,11 @@ app.post("/add-trainer-course", async (req, res) => {
     res.send(addTrainerCourseResult);
 });
 
+// for this route add the authentication as only employees should be able to post to this route
+app.post("/add-event", async (req, res) => {
+    null;
+});
+
 app.post("/assign-event", async (req, res) => {
     const assignEventResult = await assignEvent(req.body.eventId, req.body.trainerId, req.body.employeeEmail);
 
