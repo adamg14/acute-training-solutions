@@ -11,7 +11,7 @@ const trainerSchema = mongoose.Schema({
         unique: true
     },
 
-    // trainer qualificiations must be one of - Nursing home staff, ... - this must be added to validations
+
     trainerCourse: {
         type: [String],
         required: true
@@ -32,7 +32,7 @@ const trainerSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    
+
     passwordHash: {
         type: String,
         required: true

@@ -56,11 +56,15 @@ app.post("/register-employee", async (req, res) => {
     const registerEmployeeResult = await registerEmployee(employeeEmail, employeePassword);
 });
 
+app.post("/register-trainer", async (req, res) => {
+
+});
+
 app.post("/login-employee", async (req, res) => {
     const employeeEmail = req.body.employeeEmail;
     const employeePassword = req.body.employeePassword;
     const employeeDatabaseRecord = await getEmployee(employeeEmail);
-    
+
     if (employeeDatabaseRecord[0].employeeEmail.toString() === employeeEmail && compareHash(employeePassword, employeeDatabaseRecord[0].employeePassword.toString())) {
         req.session.user = {
             email: employeeEmail,
