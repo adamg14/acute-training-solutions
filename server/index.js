@@ -16,6 +16,7 @@ const getEmployee = require("./middleware/getEmployee");
 const compareHash = require("./middleware/compareHash");
 const cookieParser = require("cookie-parser");
 const app = express();
+const uuid = require("uuid");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -89,7 +90,11 @@ app.post("/add-employee", async (req, res) => {
 });
 
 app.post("/add-event", async (req, res) => {
-    const addEventResult = await addEvent(req.body.eventId, req.body.additionalInformation, req.body.course, req.body.date, req.body.eventPostcode, req.body.eventRegion, req.body.eventType);
+    // generate an id for an event
+    const eventId = uuid.v4();
+
+    const addEventResult = await addEvent(eventId, req.body.additionalInformation, req.body.course, req.body.date, req.body.eventPostcode, req.body.eventRegion, req.body.eventType);
+    console.log("this should be the result of adding the event: " + addEventResult);
     res.send(addEventResult);
 });
 
