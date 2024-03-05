@@ -18,7 +18,7 @@ const eventSchema = mongoose.Schema({
     },
 
     course: {
-        type: [String],
+        type: String,
         required: true
     },
 
