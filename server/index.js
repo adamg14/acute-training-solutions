@@ -14,9 +14,11 @@ const passwordHashing = require("./middleware/passwordHashing");
 const expressSession = require("express-session");
 const getEmployee = require("./middleware/getEmployee");
 const compareHash = require("./middleware/compareHash");
+const automatedMail = require("./middleware/automatedMail");
 const cookieParser = require("cookie-parser");
 const app = express();
 const uuid = require("uuid");
+const getTrainerByCourseRegion = require("./middleware/getTrainerByCourseRegion");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -95,7 +97,22 @@ app.post("/add-event", async (req, res) => {
 
     const addEventResult = await addEvent(eventId, req.body.additionalInformation, req.body.course, req.body.date, req.body.eventPostcode, req.body.eventRegion, req.body.eventType);
     console.log("this should be the result of adding the event: " + addEventResult);
-    res.send(addEventResult);
+
+    // once the event is added send an email to all the trainers within the region who can do the course
+    const [filteredTrainers] = getTrainerByCourseRegion(req.body.course, req.body.eventRegion);
+    if (filteredTrainers[0] == "error occurred"){
+        res.send("error occurred");
+    }else{
+        // for each of the filtered
+        if (filteredTrainers.length === 0){
+            // CAN SEND THE TRAINER A LIST OF 
+            res.send("no trainers within the region");
+        }else{
+            for (i = 0; i < filteredTrainers.length; i++){
+                automatedMail(filteredTrainers[i].trainerEmail);
+            }
+        }
+    }
 });
 
 app.post("/add-trainer", async (req, res) => {
