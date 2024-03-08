@@ -48,12 +48,22 @@ const eventSchema = mongoose.Schema({
         required: true
     },
 
-    potentialTrainers: {
-        type: [{
-            String: trainerId,
-            distanceFromEvent: Decimal128
-        }]
-    },
+    potentialTrainers: [
+        {
+            trainerId: {
+                type: String,
+                required: true
+            },
+            distance: {
+                type: Number,
+                required: true
+            },
+            selected: {
+                type: Boolean,
+                default: false
+            }
+        }
+    ],
 
     booked: {
         type: [String]

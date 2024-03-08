@@ -19,6 +19,8 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const uuid = require("uuid");
 const getTrainerByCourseRegion = require("./middleware/getTrainerByCourseRegion");
+const registerTrainer = require("./middleware/registerTrainer");
+const getTrainerByCourse = require("./middleware/getTrainerByCourse");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -60,7 +62,9 @@ app.post("/register-employee", async (req, res) => {
 });
 
 app.post("/register-trainer", async (req, res) => {
-
+    const trainerPassword = passwordHashing(req.body.password);
+    const registerResult = await registerTrainer(req.body.email, req.body.fullName, req.body.postcode, req.body.region, req.body.inductionChecked, req.body.childcareChecked, req.body.clinicalChecked, req.body.mentalHealthChecked, trainerPassword);
+    res.send(registerResult);
 });
 
 app.post("/login-employee", async (req, res) => {
@@ -86,6 +90,11 @@ app.post("/add-course", async (req, res) => {
     res.send(addCourseResult);
 });
 
+app.post("/edit-course/:courseId", async (req, res) => {
+    // create a function for this route 
+});
+
+// no longer need this course
 app.post("/add-employee", async (req, res) => {
     const addEmployeeResult = await addEmployee(req.body.employeeEmail, req.body.employeeName);
     res.send(addEmployeeResult);
@@ -100,39 +109,36 @@ app.post("/add-event", async (req, res) => {
 
     // once the event is added send an email to all the trainers within the region who can do the course
     const [filteredTrainers] = getTrainerByCourseRegion(req.body.course, req.body.eventRegion);
-    if (filteredTrainers[0] == "error occurred"){
+    if (filteredTrainers[0] == "error occurred") {
         res.send("error occurred");
-    }else{
+    } else {
         // for each of the filtered
-        if (filteredTrainers.length === 0){
+        if (filteredTrainers.length === 0) {
             // CAN SEND THE TRAINER A LIST OF 
             res.send("no trainers within the region");
-        }else{
-            for (i = 0; i < filteredTrainers.length; i++){
+        } else {
+            for (i = 0; i < filteredTrainers.length; i++) {
                 automatedMail(filteredTrainers[i].trainerEmail);
             }
         }
     }
 });
 
+// no longer need this route
 app.post("/add-trainer", async (req, res) => {
     const addTrainerResult = await addTrainer(req.body.trainerEmail, req.body.trainerCourse, req.body.trainerName, req.body.trainerPostcode, req.body.trainerRegion, req.body.passwordHash);
 
     res.send(addTrainerResult);
 });
 
+// no longer need this route
 app.post("/add-trainer-course", async (req, res) => {
     const addTrainerCourseResult = await addTrainerCourse(req.body.courseId, req.body.trainerEmail);
 
     res.send(addTrainerCourseResult);
 });
 
-// for this route add the authentication as only employees should be able to post to this route
-app.post("/add-event", async (req, res) => {
-    null;
-});
-
-app.post("/assign-event", async (req, res) => {
+app.post("/assign-event/:eventId/:trainerId", async (req, res) => {
     const assignEventResult = await assignEvent(req.body.eventId, req.body.trainerId, req.body.employeeEmail);
 
     res.send(assignEventResult);
@@ -142,6 +148,23 @@ app.post("/findEvent", async (req, res) => {
     const findEventResult = await findEvent(req.body.eventId);
 
     res.send(findEventResult);
+});
+
+app.get("/:eventId/potential-trainers", async (req, res) => {
+    // render the potential trainers for a specific event to the employee
+    const selectedEvent = await findEvent(req.params.eventId);
+
+    // retrieve the region and the course of the selected event
+    const eventRegion = selectedEvent.eventRegion;
+    const eventPostcode = selectedEvent.eventPostcode;
+    const eventCourse = selectedEvent.course;
+
+    // the candiates that are strong candidates - match with region and course
+    const [strongCanidates] = getTrainerByCourseRegion(eventCourse, eventRegion);
+    const [allCandidates] = getTrainerByCourse(eventCourse);
+
+    // render both of these lists of canidates to the employee on the frontend - and allow them to selcted the trainer that is the most suitable for the event
+    // ...
 });
 
 app.listen(PORT, () => {
