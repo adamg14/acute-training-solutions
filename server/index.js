@@ -21,6 +21,7 @@ const uuid = require("uuid");
 const getTrainerByCourseRegion = require("./middleware/getTrainerByCourseRegion");
 const registerTrainer = require("./middleware/registerTrainer");
 const getTrainerByCourse = require("./middleware/getTrainerByCourse");
+const loginEmployee = require("./middleware/loginEmployee");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -59,6 +60,7 @@ app.post("/register-employee", async (req, res) => {
     const employeeEmail = req.body.employeeEmail;
     const employeePassword = passwordHashing(req.body.employeePassword);
     const registerEmployeeResult = await registerEmployee(employeeEmail, employeePassword);
+    console.log(registerEmployeeResult);
 });
 
 app.post("/register-trainer", async (req, res) => {
@@ -70,19 +72,26 @@ app.post("/register-trainer", async (req, res) => {
 app.post("/login-employee", async (req, res) => {
     const employeeEmail = req.body.employeeEmail;
     const employeePassword = req.body.employeePassword;
-    const employeeDatabaseRecord = await getEmployee(employeeEmail);
+    const correctCredentials = await loginEmployee(employeeEmail, employeePassword);
 
-    if (employeeDatabaseRecord[0].employeeEmail.toString() === employeeEmail && compareHash(employeePassword, employeeDatabaseRecord[0].employeePassword.toString())) {
+    if (correctCredentials === true) {
+        console.log("true");
         req.session.user = {
             email: employeeEmail,
-            role: 'employee'
+            role: "Employee"
         };
 
-        res.cookie("sessionId", req.sessionID, { maxAge: 900000, httpOnly: true });
-        res.send("valid credentials");
+        // one hour cookie
+        res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
+
+        console.log(res.cookie);
+        console.log(req.session.user);
     } else {
-        res.send("invalid credentials");
+        console.log("false");
+        // send - not sure how to redirect user
     }
+
+    res.send("need to finish this route");
 });
 
 app.post("/add-course", async (req, res) => {

@@ -17,7 +17,7 @@ function EmployeeRegister() {
                 employeePassword: passwordInput
             };
 
-            await axios.post("http://localhost:4000/login-employee", postData);
+            await axios.post("http://localhost:4000/register-employee", postData);
         }
     }
 
