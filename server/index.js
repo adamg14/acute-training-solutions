@@ -22,6 +22,7 @@ const getTrainerByCourseRegion = require("./middleware/getTrainerByCourseRegion"
 const registerTrainer = require("./middleware/registerTrainer");
 const getTrainerByCourse = require("./middleware/getTrainerByCourse");
 const loginEmployee = require("./middleware/loginEmployee");
+const loginTrainer = require("./middleware/loginTrainer");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -79,10 +80,29 @@ app.post("/login-employee", async (req, res) => {
     const correctCredentials = await loginEmployee(employeeEmail, employeePassword);
 
     if (correctCredentials === "successful login") {
-        console.log("true");
         req.session.user = {
             email: employeeEmail,
             role: "Employee"
+        };
+
+        // one hour cookie
+        res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
+
+        res.send("successful login");
+    } else {
+        res.send("error occured");
+    }
+});
+
+app.post("/login-trainer", async (req, res) => {
+    const trainerEmail = req.body.trainerEmail;
+    const trainerPassword = req.body.trainerPassword;
+    const correctCredentials = await loginTrainer(trainerEmail, trainerPassword);
+
+    if (correctCredentials === "sucessful login") {
+        req.session.user = {
+            email: trainerEmail,
+            role: "Trainer"
         };
 
         // one hour cookie
