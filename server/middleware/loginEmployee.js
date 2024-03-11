@@ -6,10 +6,9 @@ const compareHash = require("./compareHash");
 async function loginEmployee(employeeEmail, employeePassword) {
     const employeeQuery = await getEmployee(employeeEmail);
     if (compareHash(employeePassword, employeeQuery[0].employeePassword)) {
-        return true;
+        return "successful login";
     } else {
-        return false
-        
+        return "error occured";
     }
 }
 

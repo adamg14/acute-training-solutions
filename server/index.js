@@ -57,10 +57,14 @@ function authenticateEmployee() {
 
 
 app.post("/register-employee", async (req, res) => {
-    const employeeEmail = req.body.employeeEmail;
-    const employeePassword = passwordHashing(req.body.employeePassword);
-    const registerEmployeeResult = await registerEmployee(employeeEmail, employeePassword);
-    console.log(registerEmployeeResult);
+    try {
+        const employeeEmail = req.body.employeeEmail;
+        const employeePassword = passwordHashing(req.body.employeePassword);
+        const registerEmployeeResult = await registerEmployee(employeeEmail, employeePassword);
+        res.send(registerEmployeeResult);
+    } catch (error) {
+        res.send("error occurred");
+    }
 });
 
 app.post("/register-trainer", async (req, res) => {
@@ -74,7 +78,7 @@ app.post("/login-employee", async (req, res) => {
     const employeePassword = req.body.employeePassword;
     const correctCredentials = await loginEmployee(employeeEmail, employeePassword);
 
-    if (correctCredentials === true) {
+    if (correctCredentials === "successful login") {
         console.log("true");
         req.session.user = {
             email: employeeEmail,
@@ -84,14 +88,10 @@ app.post("/login-employee", async (req, res) => {
         // one hour cookie
         res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
 
-        console.log(res.cookie);
-        console.log(req.session.user);
+        res.send("successful login");
     } else {
-        console.log("false");
-        // send - not sure how to redirect user
+        res.send("error occured");
     }
-
-    res.send("need to finish this route");
 });
 
 app.post("/add-course", async (req, res) => {

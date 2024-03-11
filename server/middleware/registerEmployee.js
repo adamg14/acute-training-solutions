@@ -15,13 +15,9 @@ async function registerEmployee(employeeEmail, employeePassword) {
 
         await registerEmployee.save();
 
-        console.log("employee added to the database");
-        
-        return true;
+        return "successful registration";
     } catch (error) {
-        console.log("error occurred");
-        console.log(error);
-        return error;
+        return "error occurred";
     }
 }
 

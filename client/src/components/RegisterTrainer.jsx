@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function RegisterTrainer() {
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
@@ -14,7 +16,13 @@ function RegisterTrainer() {
     const [clinicalChecked, setClinicalChecked] = useState(false);
     const [mentalHealthChecked, setMentalHealthChecked] = useState(false);
     const [password, setPassword] = useState();
+    const [registered, setRegistered] = useState(false);
 
+    useEffect(() => {
+        if (registered) {
+            navigate("/trainer-login");
+        }
+    });
     function handleNameInput(event) {
         setName(event.target.value);
     }
@@ -53,14 +61,6 @@ function RegisterTrainer() {
 
     async function handleFormSubmission(event) {
         event.preventDefault();
-        // // validate that a region has been selected
-        // if (region !== "") {
-        //     // user has selected a region
-        // } else {
-        //     // render an error message
-        //     setErrorMessage("Region not selected. Please select a region.");
-        //     document.getElementById("errorMessage").removeAttribute("hidden");
-        // }
 
         const postData = {
             email: email,
@@ -74,8 +74,14 @@ function RegisterTrainer() {
             password: password
         };
 
-        await axios.post("http://localhost:4000/register-trainer", postData);
+        const registerTrainerResponse = (await axios.post("http://localhost:4000/register-trainer", postData)).data;
 
+        if (registerTrainerResponse === "registered successfully") {
+            setRegistered(true);
+        } else {
+            setErrorMessage("An error occurred. Please try again");
+            document.getElementById("errorMessage").removeAttribute("hidden");
+        }
     }
 
     return (
@@ -175,6 +181,10 @@ function RegisterTrainer() {
                     <button className="btn btn-primary" onClick={handleFormSubmission}>Register Trainer</button>
                 </div>
             </form>
+
+            <div className="alert alert-danger" role="alert" id="errorMessage" hidden>
+                <p>{errorMessage}</p>
+            </div>
         </div>
     )
 }

@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 function EmployeeLogin() {
+
+    const navigate = useNavigate();
 
     const [emailInput, setEmailInput] = useState("");
     const [passwordInput, setPasswordInput] = useState("");
     const [validationMessage, setValidationMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [authenticated, setAuthenticated] = useState(false);
+
+    // the useEffect hook constantly checks if the employee has been authenticated - when they have been authenticated the user can access restricted routes and can be sent the dashboard
+    useEffect(() => {
+        if (authenticated) {
+            navigate("/employee-home");
+        }
+    });
+
     async function handleFormSubmission(event) {
         // add extra validation here 
         event.preventDefault();
@@ -18,19 +30,15 @@ function EmployeeLogin() {
             };
 
             const loginResult = (await axios.post("http://localhost:4000/login-employee", postData)).data;
-
-            if (loginResult === "invalid credentials") {
-                setValidationMessage("Invalid Credentials. Please try again.");
-                document.getElementById("failureMessage").removeAttribute("hidden");
+            console.log(loginResult)
+            if (loginResult === "successful login") {
+                setAuthenticated(true);
             } else {
-                setValidationMessage("Valid Credentials. You have been logged in successfully");
-                document.getElementById("failureMessage").setAttribute("hidden", true);
-                document.getElementById("successMessage").removeAttribute("hidden");
+                setValidationMessage("Error occurred. Invalid credentials or error in database connection. Please try again");
+                document.getElementById("failureMessage").removeAttribute("hidden");
             }
-        } else {
-            setValidationMessage("Invalid credentials. Both password and email input must be above 3 characters");
-            document.getElementById("failureMessage").removeAttribute("hidden");
         }
+
     }
 
     function handleEmailInput(event) {

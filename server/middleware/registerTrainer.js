@@ -16,10 +16,10 @@ async function registerTrainer(email, fullName, postcode, region, induction, chi
 
         await registerNewTrainer.save();
 
-        return true;
+        return "registered successfully";
     } catch (error) {
         console.log(error);
-        return ["error occurred", error];
+        return "error occurred";
     }
 }
 
