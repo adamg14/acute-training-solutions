@@ -25,6 +25,7 @@ const loginEmployee = require("./middleware/loginEmployee");
 const loginTrainer = require("./middleware/loginTrainer");
 const changeTrainerPassword = require("./middleware/changeTrainerPassword");
 const changeEmployeePassword = require("./middleware/changeEmployeePassword");
+const getEvents = require("./middleware/getEvents");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -114,6 +115,11 @@ app.post("/login-trainer", async (req, res) => {
     } else {
         res.send("error occured");
     }
+});
+
+app.get("/get-events", async (req, res) => {
+    const events = await getEvents();
+    res.send(events);
 });
 
 app.post("/edit-trainer-password", async (req, res) => {

@@ -13,6 +13,7 @@ import AdminHome from './components/AdminHome';
 import AddEvent from './components/AddEvent';
 import RegisterTrainer from './components/RegisterTrainer';
 import LoginTrainer from './components/LoginTrainer';
+import Events from './components/Events';
 // have a portal to render the different users of the application
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/add-event" element={<AddEvent></AddEvent>}></Route>
           <Route path="/trainer-register" element={<RegisterTrainer></RegisterTrainer>}></Route>
           <Route path="/trainer-login" element={<LoginTrainer></LoginTrainer>}></Route>
+          <Route path="/events" element={<Events></Events>}></Route>
         </Routes>
       </Router>
     </div>
