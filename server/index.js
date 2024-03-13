@@ -23,6 +23,8 @@ const registerTrainer = require("./middleware/registerTrainer");
 const getTrainerByCourse = require("./middleware/getTrainerByCourse");
 const loginEmployee = require("./middleware/loginEmployee");
 const loginTrainer = require("./middleware/loginTrainer");
+const changeTrainerPassword = require("./middleware/changeTrainerPassword");
+const changeEmployeePassword = require("./middleware/changeEmployeePassword");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -112,6 +114,26 @@ app.post("/login-trainer", async (req, res) => {
     } else {
         res.send("error occured");
     }
+});
+
+app.post("/edit-trainer-password", async (req, res) => {
+    // get the email of the trainer from the session that is sending a request to this route
+    const trainerEmail = req.session.user.email;
+    const newPassword = req.body.newPassword;
+
+    const editPasswordResult = await changeTrainerPassword(trainerEmail, newPassword);
+
+    res.send(editPasswordResult);
+});
+
+app.post("/edit-employee-password", async (req, res) => {
+    const employeeEmail = req.session.user.email;
+    const newPassword = req.body.newPassword;
+
+    const editPasswordResult = await changeEmployeePassword
+    (employeeEmail, newPassword);
+
+    res.send(editPasswordResult);
 });
 
 app.post("/add-course", async (req, res) => {
