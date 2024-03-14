@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import "bootstrap/dist/css/bootstrap.min.css";
+import { useNavigate } from "react-router-dom";
 function Events() {
     const [events, setEvents] = useState([]);
 
@@ -20,6 +21,13 @@ function Events() {
 }
 
 function Event({ events }) {
+    const navigate = useNavigate();
+
+    function handleButtonClick(event){
+        const eventAPIEndpoint = event.target.value;
+        navigate("/event/" + eventAPIEndpoint);
+    }
+
     return (
         <div>
             {events.map(record => (
@@ -27,6 +35,7 @@ function Event({ events }) {
                     <h6>{String(record.eventId)}</h6>
                     <p>{record.additionalInformation}</p>
                     <p>{record.date}</p>
+                    <button className="btn btn-primary" value={ record.eventId } onClick={ handleButtonClick }>Select Event</button>
                     <hr />
                 </div>
             ))}
