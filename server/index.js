@@ -126,7 +126,7 @@ app.get("/get-events", async (req, res) => {
 
 // get Event for the individual get Event page
 app.post("/get-event", async (req, res) => {
-    const getEventResult = getEvent(String(req.body.eventId));
+    const getEventResult = await getEvent(req.body.eventId);
     res.send(getEventResult);
 });
 
