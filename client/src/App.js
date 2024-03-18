@@ -15,7 +15,7 @@ import RegisterTrainer from './components/RegisterTrainer';
 import LoginTrainer from './components/LoginTrainer';
 import Events from './components/Events';
 import EventPage from './components/EventPage';
-// have a portal to render the different users of the application
+import PotentialTrainers from './components/PotentialTrainers';
 
 function App() {
   return (
@@ -34,6 +34,7 @@ function App() {
           <Route path="/trainer-login" element={<LoginTrainer></LoginTrainer>}></Route>
           <Route path="/events" element={<Events></Events>}></Route>
           <Route path="event/:eventId" element={ <EventPage></EventPage>}></Route>
+          <Route path="event/potential-trainers/:eventId" element={ <PotentialTrainers></PotentialTrainers> }></Route>
         </Routes>
       </Router>
     </div>

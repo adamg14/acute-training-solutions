@@ -16,7 +16,7 @@ const employeeSchema = mongoose.Schema({
         required: true
     },
 
-    booked: {
+    events: {
         type: [String]
     }
 });

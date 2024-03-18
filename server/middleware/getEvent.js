@@ -4,8 +4,9 @@ const Event = require("../models/Event");
 async function getEvent(eventId) {
     try {
         await mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
+        const requestedEvent = await Event.find({ eventId: eventId });
 
-        const requestedEvent = await Event.find({ eventId: eventId }).exec();
+        console.log(requestedEvent);
 
         return requestedEvent[0];
     } catch (error) {

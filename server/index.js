@@ -203,6 +203,10 @@ app.post("/add-trainer-course", async (req, res) => {
     res.send(addTrainerCourseResult);
 });
 
+app.post("/get-trainer-course-region", async (req, res) =>{
+    const trainerQueryResult = await getTrainerByCourseRegion();
+});
+
 app.post("/assign-event/:eventId/:trainerId", async (req, res) => {
     const assignEventResult = await assignEvent(req.body.eventId, req.body.trainerId, req.body.employeeEmail);
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 function EventPage() {
     const location = useLocation();
@@ -9,6 +9,8 @@ function EventPage() {
 
     // slice the API endpoint to get the eventId of the selected event
     const eventId = currentPath.slice(7, currentPath.length);
+
+    const potentialTrainersEndpoint = "/event/potential-trainers/" + eventId;
 
     const [eventDetails, setEventDetails] = useState();
     const [additionalInformation, setAdditionalInformation] = useState();
@@ -38,9 +40,13 @@ function EventPage() {
             <h1>Event Page</h1>
             <p>{eventType} event.</p>
             <p>Additional Information: {additionalInformation}</p>
-            <p>Course: { course }</p>
+            <p>Course: {course}</p>
             <p>Date: {date}</p>
             <p>Location {eventLocation}</p>
+
+            <Link to={potentialTrainersEndpoint}>
+                <button className="btn btn-primary">Potential Trainers</button>
+            </Link>
         </div>
     );
 
