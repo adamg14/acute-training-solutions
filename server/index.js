@@ -27,6 +27,7 @@ const changeTrainerPassword = require("./middleware/changeTrainerPassword");
 const changeEmployeePassword = require("./middleware/changeEmployeePassword");
 const getEvents = require("./middleware/getEvents");
 const getEvent = require("./middleware/getEvent");
+const getTrainerByRegion = require("./middleware/getTrainerByRegion");
 
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -204,9 +205,27 @@ app.post("/add-trainer-course", async (req, res) => {
 });
 
 app.post("/get-trainer-course-region", async (req, res) =>{
-    const trainerQueryResult = await getTrainerByCourseRegion();
+    const course = req.body.course;
+    const region = req.body.region;
+    const trainerQueryResult = await getTrainerByCourseRegion(course, region);
+    res.send(trainerQueryResult);
 });
 
+app.post("/get-trainer-course", async(req, res) => {
+    const course = req.body.course;
+    
+    const trainerQueryResult = await getTrainerByCourse(course);
+
+    res.send(trainerQueryResult);
+});
+
+app.post("/get-trainer-region", async(req, res) => {
+    const region = req.body.region;
+
+    const trainerQueryResult = await getTrainerByRegion(region);
+
+    res.send(trainerQueryResult);
+});
 app.post("/assign-event/:eventId/:trainerId", async (req, res) => {
     const assignEventResult = await assignEvent(req.body.eventId, req.body.trainerId, req.body.employeeEmail);
 

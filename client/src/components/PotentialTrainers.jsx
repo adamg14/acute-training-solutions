@@ -26,12 +26,28 @@ function PotentialTrainers() {
             const eventRegion = response.data.region;
 
             // get the data for the the trainers within the region who are qualified
+            // IF STATEMENTS TO DETERMINE IF ANY OF THE RESPONSES HAVE A LENGTH OF  ZERO
             const qualifiedRegionalTrainersPostData = {
                 course: eventCourse,
                 region: eventRegion
             };
 
-            // axios.post(""
+            const qualifiedTrainersPostData = {
+                course: eventCourse
+            };
+
+            const regionalTrainersPostData = {
+                region: eventRegion
+            };
+
+            const queryResult = response.data;
+
+            axios.post("http://localhost:4000/get-trainer-course", qualifiedTrainersPostData).then((response2) => {
+                const queryResult = response2.data;
+
+
+                axios.post("http://localhost:4000/get-trainer-region");
+            });
         });
     });
 

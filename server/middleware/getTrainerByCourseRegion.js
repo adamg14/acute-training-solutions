@@ -6,12 +6,12 @@ async function getTrainerByCourseRegion(course, region) {
     try {
         await mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
 
-        const trainerQueryResult = await Trainer.find({ trainerCourse: { $in: [new RegExp(course, "i")] }, trainerRegion: region });
-        
+        const trainerQueryResult = await Trainer.find({ trainerCourse: course, trainerRegion: region });
+
         return trainerQueryResult;
-} catch (error) {
-    return ["error occurred", error];
-}
+    } catch (error) {
+        return ["error occurred", error];
+    }
 }
 
 module.exports = getTrainerByCourseRegion;
