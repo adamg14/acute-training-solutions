@@ -28,7 +28,10 @@ const changeEmployeePassword = require("./middleware/changeEmployeePassword");
 const getEvents = require("./middleware/getEvents");
 const getEvent = require("./middleware/getEvent");
 const getTrainerByRegion = require("./middleware/getTrainerByRegion");
-
+const getTrainer = require("./middleware/getTrainer");
+const getEventByCourseRegion = require("./middleware/getEventsByCourseRegion");
+const getEventsByCourse = require("./middleware/getEventsByCourse");
+const getEventsByRegion = require("./middleware/getEventsByRegion");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -131,6 +134,21 @@ app.post("/get-event", async (req, res) => {
     res.send(getEventResult);
 });
 
+app.post("/get-events-course-region", async(req, res) => {
+    const getEventsResult = await getEventByCourseRegion(req.body.course, req.body.region);
+    res.send(getEventsResult);
+});
+
+app.post("/get-events-course", async (req, res) => {
+    const getEventsResult = await getEventsByCourse(req.body.course);
+    res.send(getEventsResult);
+});
+
+app.post("/get-events-region", async(req, res) => {
+    const getEventsResult = await getEventsByRegion(req.body.region);
+    res.send(getEventsResult);
+});
+
 app.post("/edit-trainer-password", async (req, res) => {
     // get the email of the trainer from the session that is sending a request to this route
     const trainerEmail = req.session.user.email;
@@ -141,12 +159,13 @@ app.post("/edit-trainer-password", async (req, res) => {
     res.send(editPasswordResult);
 });
 
+
 app.post("/edit-employee-password", async (req, res) => {
     const employeeEmail = req.session.user.email;
     const newPassword = req.body.newPassword;
 
     const editPasswordResult = await changeEmployeePassword
-    (employeeEmail, newPassword);
+        (employeeEmail, newPassword);
 
     res.send(editPasswordResult);
 });
@@ -204,22 +223,28 @@ app.post("/add-trainer-course", async (req, res) => {
     res.send(addTrainerCourseResult);
 });
 
-app.post("/get-trainer-course-region", async (req, res) =>{
+app.post("/get-trainer", async (req, res) => {
+    // SHOULD GET THIS DATA FROM THE SESSION OBJECT FOR SECURITY REASONS
+    const databaseQuery = await getTrainer(req.body.trainerEmail);
+    res.send(databaseQuery);
+});
+
+app.post("/get-trainer-course-region", async (req, res) => {
     const course = req.body.course;
     const region = req.body.region;
     const trainerQueryResult = await getTrainerByCourseRegion(course, region);
     res.send(trainerQueryResult);
 });
 
-app.post("/get-trainer-course", async(req, res) => {
+app.post("/get-trainer-course", async (req, res) => {
     const course = req.body.course;
-    
+
     const trainerQueryResult = await getTrainerByCourse(course);
 
     res.send(trainerQueryResult);
 });
 
-app.post("/get-trainer-region", async(req, res) => {
+app.post("/get-trainer-region", async (req, res) => {
     const region = req.body.region;
 
     const trainerQueryResult = await getTrainerByRegion(region);
