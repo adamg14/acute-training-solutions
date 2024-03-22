@@ -50,7 +50,7 @@ const eventSchema = mongoose.Schema({
 
     potentialTrainers: [
         {
-            trainerId: {
+            trainerEmail: {
                 type: String,
                 required: true
             },
@@ -64,6 +64,7 @@ const eventSchema = mongoose.Schema({
             }
         }
     ],
+    
     selectedTrainer: {
         type: String
     },

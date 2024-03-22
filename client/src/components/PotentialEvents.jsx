@@ -13,9 +13,14 @@ function PotentialEvents() {
     const [region, setRegion] = useState();
     const [course, setCourse] = useState();
 
+    const [qualifiedRegionalEvents, setQualifiedRegionalEvents] = useState([]);
+    const [qualifiedEvents, setQualifiedEvents] = useState([]);
     const [regionalEvents, setRegionalEvents] = useState([]);
+
+    // NEED TO ADD A TRAINERID TO THE SCHEMA SO IT CAN BE USED AS AN ENDPOINT
     useEffect(() => {
         const postBody = {
+            // EDIT THIS KEY VALUE PAIR ONCE SCHEMA PROPERLY REEVALUATED
             trainerEmail: "adam@email.com",
             course: course,
             region: region
@@ -28,9 +33,10 @@ function PotentialEvents() {
 
             // get the courses the trainer is qualified to do within their region
             axios.post("http://localhost:4000/get-events-course-region", postBody).then((result2) => {
-
-                // get teh courses that the trainer is qualified for
+                setQualifiedRegionalEvents(result2.data);
+                // get the courses that the trainer is qualified for
                 axios.post("http://localhost:4000/get-events-course", postBody).then((result3) => {
+                    setQualifiedEvents(result3.data);
                     axios.post("http://localhost:4000/get-events-region", postBody).then((result4) => {
                         setRegionalEvents(result4.data);
                     });
@@ -46,27 +52,42 @@ function PotentialEvents() {
 
             <h3>Events you Qualify for in your Region</h3>
 
+            <DisplayEvents events={qualifiedRegionalEvents}></DisplayEvents>
             <h3>Events you Qualify for</h3>
+
+            <DisplayEvents events={ qualifiedEvents }></DisplayEvents>
             <h3>Events in your Region</h3>
 
-            <RegionalEvents events={regionalEvents}></RegionalEvents>
+            <DisplayEvents events={regionalEvents}></DisplayEvents>
         </div>
     );
 
-    function RegionalEvents({ events }) {
+    function QualifiedRegionalEvents({ events }) {
+
+    }
+    function DisplayEvents({ events }) {
 
         function handleButtonClick(event) {
             // add the trainer as a potential trainer
-            console.log(event.target.value);
+            console.log("this should be the eventId" + event.target.value);
             console.log("hello");
         }
 
+        if (events.length == 0) {
+            return (
+                <p>No current events meet these requirements.</p>
+            );
+        }
         return (
             <div>
                 {events.map(regionalEvent => (
-                    <div>
+                    <div key={regionalEvent.eventId}>
                         <h6>{regionalEvent.additionalInformation}</h6>
                         <button className="btn btn-primary" onClick={handleButtonClick} value={regionalEvent.eventId}>Sign up to be a potential trainer for this event.</button>
+
+                        <div className="alert alert-primary" hidden id="eventSelectedMessage">
+                            You have submitted your availability. Your application will now be considered by our employees and you will be contacted if you are selected to carry out this event.
+                        </div>
                         <hr />
                     </div>
                 ))}

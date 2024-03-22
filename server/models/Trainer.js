@@ -5,6 +5,13 @@ const courseModel = require("./Course");
 mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0")
 
 const trainerSchema = mongoose.Schema({
+    // trainerId added to the schema to be used as a unique API endpoint 
+    trainerId: {
+        type: String,
+        required: true,
+        unqiue: true
+    },
+
     trainerEmail: {
         type: String,
         required: true,
