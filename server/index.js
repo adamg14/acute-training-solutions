@@ -32,6 +32,8 @@ const getTrainer = require("./middleware/getTrainer");
 const getEventByCourseRegion = require("./middleware/getEventsByCourseRegion");
 const getEventsByCourse = require("./middleware/getEventsByCourse");
 const getEventsByRegion = require("./middleware/getEventsByRegion");
+const addPotentialTrainer = require("./middleware/AddPotentialTrainer");
+
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -221,6 +223,13 @@ app.post("/add-trainer-course", async (req, res) => {
     const addTrainerCourseResult = await addTrainerCourse(req.body.courseId, req.body.trainerEmail);
 
     res.send(addTrainerCourseResult);
+});
+
+app.post("/add-potential-trainer", async (req, res) => {
+    // trainerEmail SHOULD EITHER COME FROM THE SESSION OBJECT OR ADD A TRAINER ID TO BE ADDED TO THE API ENDPOINT
+    // WRITE A FUNCTION THAT CALCULATES THE DISTANCE BETWEEN TWO POSTCODES FOR THE THIRD ARGUMENT
+    const addPotentialTrainerResult = await addPotentialTrainer(req.body.eventId, req.body.trainerId, 1);
+    res.send(addPotentialTrainerResult);
 });
 
 app.post("/get-trainer", async (req, res) => {

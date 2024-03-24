@@ -18,11 +18,6 @@ const eventSchema = mongoose.Schema({
     },
 
     course: {
-        type: [String],
-        required: true
-    },
-
-    trainer: {
         type: String,
         required: true
     },
@@ -54,13 +49,10 @@ const eventSchema = mongoose.Schema({
                 type: String,
                 required: true
             },
+            
             distance: {
                 type: Number,
                 required: true
-            },
-            selected: {
-                type: Boolean,
-                default: false
             }
         }
     ],
