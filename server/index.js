@@ -196,19 +196,18 @@ app.post("/add-event", async (req, res) => {
     console.log("this should be the result of adding the event: " + addEventResult);
 
     // once the event is added send an email to all the trainers within the region who can do the course
-    const [filteredTrainers] = getTrainerByCourseRegion(req.body.course, req.body.eventRegion);
-    if (filteredTrainers[0] == "error occurred") {
-        res.send("error occurred");
-    } else {
-        // for each of the filtered
-        if (filteredTrainers.length === 0) {
-            // CAN SEND THE TRAINER A LIST OF 
-            res.send("no trainers within the region");
-        } else {
-            for (i = 0; i < filteredTrainers.length; i++) {
-                automatedMail(filteredTrainers[i].trainerEmail);
-            }
-        }
+    const qualifiedTrainers = await getTrainerByCourse(req.body.course);
+    const regionalTrainers = await getTrainerByRegion(req.body.eventRegion);
+    const qualifiedRegionalTrainers = await getTrainerByCourseRegion(req.body.course, req.body.eventRegion);
+
+    const potentialTrainers = qualifiedTrainers.concat(regionalTrainers, qualifiedRegionalTrainers);
+
+    const uniquePotentialTrainers = [...new Set(potentialTrainers)];
+
+    // sending an email to each potential trainers notifying them of an added event
+    for (let i = 0; i < uniquePotentialTrainers.length; i++){
+        let trainerEmailAddress = uniquePotentialTrainers[i].trainerEmail;
+        automatedMail(trainerEmailAddress);
     }
 });
 

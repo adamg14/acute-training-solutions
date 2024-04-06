@@ -13,8 +13,8 @@ function automatedMail(emailAddress) {
     const mailerOptions = {
         from: "adamg2609@gmail.com",
         to: emailAddress,
-        subject: "New event added",
-        html: "<p>View app to see event details</p>"
+        subject: "New Event",
+        html: "<p>A new event has been added, view app to see event details.</p>"
     };
 
     transporter.sendMail(mailerOptions, function (err, info) {
