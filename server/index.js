@@ -80,8 +80,9 @@ app.post("/register-employee", async (req, res) => {
 });
 
 app.post("/register-trainer", async (req, res) => {
+    const trainerId = uuid.v4();
     const trainerPassword = passwordHashing(req.body.password);
-    const registerResult = await registerTrainer(req.body.email, req.body.fullName, req.body.postcode, req.body.region, req.body.inductionChecked, req.body.childcareChecked, req.body.clinicalChecked, req.body.mentalHealthChecked, trainerPassword);
+    const registerResult = await registerTrainer(trainerId, req.body.email, req.body.fullName, req.body.postcode, req.body.region, req.body.qualifications, trainerPassword);
     res.send(registerResult);
 });
 
@@ -136,7 +137,7 @@ app.post("/get-event", async (req, res) => {
     res.send(getEventResult);
 });
 
-app.post("/get-events-course-region", async(req, res) => {
+app.post("/get-events-course-region", async (req, res) => {
     const getEventsResult = await getEventByCourseRegion(req.body.course, req.body.region);
     res.send(getEventsResult);
 });
@@ -146,7 +147,7 @@ app.post("/get-events-course", async (req, res) => {
     res.send(getEventsResult);
 });
 
-app.post("/get-events-region", async(req, res) => {
+app.post("/get-events-region", async (req, res) => {
     const getEventsResult = await getEventsByRegion(req.body.region);
     res.send(getEventsResult);
 });

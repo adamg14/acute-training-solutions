@@ -11,13 +11,9 @@ function RegisterTrainer() {
     const [postcode, setPostcode] = useState("");
     const [region, setRegion] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [inductionChecked, setInductionChecked] = useState(false);
-    const [childcareChecked, setChildcareChecked] = useState(false);
-    const [clinicalChecked, setClinicalChecked] = useState(false);
-    const [mentalHealthChecked, setMentalHealthChecked] = useState(false);
     const [password, setPassword] = useState();
     const [registered, setRegistered] = useState(false);
-
+    const [qualifications, setQualifications] = useState([]);
     useEffect(() => {
         if (registered) {
             navigate("/trainer-login");
@@ -35,20 +31,17 @@ function RegisterTrainer() {
         setPostcode(event.target.value);
     }
 
-    function handleInductionCheckInput(event) {
-        setInductionChecked(!inductionChecked);
-    }
+    function handleQualificationsInput(event) {
+        console.log(event.target.value);
 
-    function handleChildcareCheckInput(event) {
-        setChildcareChecked(!childcareChecked);
-    }
+        const value = event.target.value;
+        const checked = event.target.checked;
 
-    function handleClinicalCheckInput(event) {
-        setClinicalChecked(!clinicalChecked);
-    }
-
-    function handleMentalHealthCheckInput(event) {
-        setMentalHealthChecked(!mentalHealthChecked);
+        if (checked) {
+            setQualifications([...qualifications, value]);
+        } else {
+            setQualifications(qualifications.filter((item) => item !== value));
+        }
     }
 
     function handlePasswordInput(event) {
@@ -67,10 +60,7 @@ function RegisterTrainer() {
             fullName: name,
             postcode: postcode,
             region: region,
-            inductionChecked: inductionChecked,
-            childcareChecked: childcareChecked,
-            clinicalChecked: clinicalChecked,
-            mentalHealthChecked: mentalHealthChecked,
+            qualifications: qualifications,
             password: password
         };
 
@@ -146,23 +136,145 @@ function RegisterTrainer() {
                 <br />
 
                 <div className="form-group">
-                    <h6>Select Course Qualifications</h6>
+                    <h3>Select Which Courses You Have Qualifications In</h3>
+                    <h6>Select Which Courses You have Qualification In</h6>
                     <div className="form-group">
                         <div className="form-check">
-                            <input type="checkbox" className="form-check-input" value={inductionChecked} id="induction" onChange={handleInductionCheckInput} />
-                            <label htmlFor="induction">Induction & Management Training</label>
+
+
+                            <h6>Induction & Management Qualifications</h6>
+
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Basic Life Support" id="BLS" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="" className="form-checked-label">Basic Life Support</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Care of Medicine Level 1" id="CML1" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="CML1" className="form-checked-label">Care of Medicine Level 1</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Effective Communication" id="EC" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="EC" className="form-checked-label">Effective Communication</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Lone Working & Personal Safety" id="LWPS" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="LWS" className="form-checked-label">Lone Working & Personal Safety</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="People Handling" id="PH" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="PH" className="form-checked-label">People Handling</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Safeguarding of Adults" id="SA" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="SA" className="form-checked-label">Safeguarding of Adults</label>
+                            </div>
                             <br />
 
-                            <input type="checkbox" className="form-check-input" value={childcareChecked} id="childcare" onChange={handleChildcareCheckInput} />
-                            <label htmlFor="childcare">Childcare Training</label>
+                            <h6>Childcare Qualifications</h6>
                             <br />
-
-                            <label htmlFor="childcare">Clinical Training</label>
-                            <input type="checkbox" className="form-check-input" value={clinicalChecked} id="clinical" onChange={handleClinicalCheckInput} />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Autism Awareness" id="AW" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="AW" className="form-checked-label">Autism Awareness</label>
+                            </div>
                             <br />
-
-                            <label htmlFor="clinical">Mental Health Training</label>
-                            <input type="checkbox" className="form-check-input" value={mentalHealthChecked} id="mental-health" onChange={handleMentalHealthCheckInput} />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Key Worker Skills" id="KWS" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="KWS" className="form-checked-label">Key Worker Skills</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Basic Life Support" id="BLS" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="BLS" className="form-checked-label">Basic Life Support</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Nutrition, Postive Eating & Early Years" id="NPEEY" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="NPEEY" className="form-checked-label">Nutrition, Postive Eating & Early Years</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Paediatric Manual Handling" id="PMH" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="PMH" className="form-checked-label">Paediatric Manual Handling</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Safeguarding of Children" id="SC" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="SC" className="form-checked-label">Safeguarding of Children</label>
+                            </div>
+                            <br />
+                            <h6>Clinical Qualifications</h6>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Anaphulaxis & Auto-Injectors" id="AAI" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="AAI" className="form-checked-label">Anaphulaxis & Auto-Injectors</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Blood Glucose Monitoring" id="BGM" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="BGM" className="form-checked-label">Blood Glucose Monitoring</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Catheterisation" id="C" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="C" className="form-checked-label">Catheterisation</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Diabetes" id="D" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="D" className="form-checked-label">Diabetes</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="IV Cannulation" id="IVC" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="IVC" className="form-checked-label">IV Cannulation</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Syringe Driver Awareness" id="SDA" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="SDA" className="form-checked-label">Syringe Driver Awareness</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Venepuncture Training" id="VT" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="VT" className="form-checked-label">Venepuncture Training</label>
+                            </div>
+                            <br />
+                            <h6>Mental Health Qualifications</h6>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Alzheimer's Disease Awareness" id="ADA" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="ADA" className="form-checked-label">Alzheimer's Disease Awareness</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Autisitic Spectrum Disorder" id="ASD" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="ASD" className="form-checked-label">Autisitic Spectrum Disorder</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Dementia Awareness" id="DA" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="DA" className="form-checked-label">Dementia Awareness</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Ligature Awareness" id="LA" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="LA" className="form-checked-label">Ligature Awareness</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Mental Health Awareness" id="MHA" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="MHA" className="form-checked-label">Mental Health Awareness</label>
+                            </div>
+                            <br />
+                            <div className="form-check">
+                                <input type="checkbox" className="form-check-input" value="Positive Behaviour Management" id="PBM" onChange={ handleQualificationsInput }/>
+                                <label htmlFor="PBM" className="form-checked-label">Positive Behaviour Management</label>
+                            </div>
                             <br />
                         </div>
                     </div>

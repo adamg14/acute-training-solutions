@@ -19,9 +19,9 @@ const trainerSchema = mongoose.Schema({
     },
 
 
-    trainerCourse: {
+    qualifications: {
         // the array is in the consistent order of: induction, childcare, clinical, mental health
-        type: [Boolean],
+        type: [String],
         required: true
     },
 

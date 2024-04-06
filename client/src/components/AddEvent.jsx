@@ -59,7 +59,7 @@ function AddEvent() {
         setRegion(event.target.value);
     }
 
-    function handlePostcodeChange(event){
+    function handlePostcodeChange(event) {
         setPostcode(event.target.value);
     }
 
@@ -88,7 +88,7 @@ function AddEvent() {
 
                 <div className="form-group">
                     <label htmlFor="coursePostcode">Course Postcode</label>
-                    <input type="text" className="form-control" id="coursePostcode" placeholder="Postcode" required onChange={ handlePostcodeChange }/>
+                    <input type="text" className="form-control" id="coursePostcode" placeholder="Postcode" required onChange={handlePostcodeChange} />
                 </div>
 
                 <div className="form-group">
@@ -127,87 +127,87 @@ function AddEvent() {
                 <div className="form-group">
                     <div className="form-checked">
                         <h6>Induction & Management Courses</h6>
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Basic Life Support"} id="basicLifeSupport" name="induction" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Basic Life Support"} id="basicLifeSupport" name="event-type" />
                         <label htmlFor="basicLifeSupport" className="form-check-label">Basic Life Support</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Care of Medicine Level 1"} id="CareMedicine" name="induction" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Care of Medicine Level 1"} id="CareMedicine" name="event-type" />
                         <label htmlFor="careMedicine" className="form-check-label">Care of Medicine Level 1</label>
                         <br />
 
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Effective Communication"} id="effectiveCommunication" name="induction" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Effective Communication"} id="effectiveCommunication" name="event-type" />
                         <label htmlFor="effectiveCommunication" className="form-check-label">Effective Communication</label>
                         <br />
 
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Lone Working & Personal Saftey"} id="loneWorking" name="induction" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Lone Working & Personal Saftey"} id="loneWorking" name="event-type" />
                         <label htmlFor="loneWorking" className="form-check-label">Lone Working & Personal Saftey</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"People Handling"} id="peopleHandling" name="induction" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"People Handling"} id="peopleHandling" name="event-type" />
                         <label htmlFor="peopleHandling" className="form-check-label">People Handling</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Safeguarding of Adults"} id="safeguardingAdults" name="induction" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Safeguarding of Adults"} id="safeguardingAdults" name="event-type" />
                         <label htmlFor="safeguardingAdults" className="form-check-label">Safeguarding of Adults</label>
                         <br />
 
                         <h6>Childcare courses</h6>
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Autism Awareness"} id="autismAwareness" name="childcare" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Autism Awareness"} id="autismAwareness" name="event-type" />
                         <label htmlFor="autismAwareness" className="form-check-label">Autism Awareness</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Key Worker Skills"} id="keyWorkerSkills" name="childcare" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Key Worker Skills"} id="keyWorkerSkills" name="event-type" />
                         <label htmlFor="keyWorkerSkills" className="form-check-label">Key Worker Skills</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Basic Life Support"} id="basicLifeSupport" name="childcare" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Basic Life Support"} id="basicLifeSupport" name="event-type" />
                         <label htmlFor="basicLifeSupport" className="form-check-label">Basic Life Support</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Nutrition, Postive Eating & Early Years"} id="nutrition" name="childcare" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Nutrition, Postive Eating & Early Years"} id="nutrition" name="event-type" />
                         <label htmlFor="nutrition" className="form-check-label">Nutrition, Postive Eating & Early Years</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Paediatric Manual Handling"} id="manualHanding" name="childcare" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Paediatric Manual Handling"} id="manualHanding" name="event-type" />
                         <label htmlFor="manualHandling" className="form-check-label">Paediatric Manual Handling</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Safeguarding of Children"} id="safeguardingChildren" name="childcare" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Safeguarding of Children"} id="safeguardingChildren" name="event-type" />
                         <label htmlFor="safeguardingChildren" className="form-check-label">Safeguarding of Children</label>
                         <br />
 
                         <h6>Clinical courses</h6>
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Anaphulaxis & Auto-Injectors"} id="aa" name="clinical" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Anaphulaxis & Auto-Injectors"} id="aa" name="event-type" />
                         <label htmlFor="aa" className="form-check-label">Anaphulaxis & Auto-Injectors</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Blood Glucose Monitoring"} id="bloodGlucose" name="clinical" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Blood Glucose Monitoring"} id="bloodGlucose" name="event-type" />
                         <label htmlFor="bloodGlucose" className="form-check-label">Blood Glucose Monitoring</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Catheterisation"} id="Catheterisation" name="clinical" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Catheterisation"} id="Catheterisation" name="event-type" />
                         <label htmlFor="Catheterisation" className="form-check-label">Catheterisation</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Diabetes Insulin & Blood Glucose Monitoring "} id="diabetes" name="clinical" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Diabetes Insulin & Blood Glucose Monitoring "} id="diabetes" name="event-type" />
                         <label htmlFor="diabetes" className="form-check-label">Diabetes</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"IV Cannulation"} id="iv" name="clinical" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"IV Cannulation"} id="iv" name="event-type" />
                         <label htmlFor="iv" className="form-check-label">IV Cannulation</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Syringe Driver Awareness"} id="sda" name="clinical" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Syringe Driver Awareness"} id="sda" name="event-type" />
                         <label htmlFor="sda" className="form-check-label">Syringe Driver Awareness</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Venepuncture Training"} id="vt" name="clinical" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Venepuncture Training"} id="vt" name="event-type" />
                         <label htmlFor="vt" className="form-check-label">Venepuncture Training</label>
                         <br />
 
                         <h6>Mental health courses</h6>
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Alzheimer's Disease Awareness"} id="ada" name="mental-health" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Alzheimer's Disease Awareness"} id="ada" name="event-type" />
                         <label htmlFor="ada" className="form-check-label">Alzheimer's Disease Awareness</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Autistic Spectrum Disorder"} id="asd" name="mental-health" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Autistic Spectrum Disorder"} id="asd" name="event-type" />
                         <label htmlFor="asd" className="form-check-label">Autistic Spectrum Disorder</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Dementia Awareness"} id="da" name="mental-health" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Dementia Awareness"} id="da" name="event-type" />
                         <label htmlFor="da" className="form-check-label">Dementia Awareness</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Ligature Awareness"} id="la" name="mental-health" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Ligature Awareness"} id="la" name="event-type" />
                         <label htmlFor="la" className="form-check-label">Ligature Awareness</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Mental Health Awareness"} id="mha" name="mental-health" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Mental Health Awareness"} id="mha" name="event-type" />
                         <label htmlFor="mha" className="form-check-label">Mental Health Awareness</label>
                         <br />
-                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Positive Behaviour Management"} id="pbm" name="mental-health" />
+                        <input type="radio" className="form-check-input" onChange={handleCourseChange} value={"Positive Behaviour Management"} id="pbm" name="event-type" />
                         <label htmlFor="pbm" className="form-check-label">Positive Behaviour Management</label>
                         <br />
                     </div>

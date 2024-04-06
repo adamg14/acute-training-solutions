@@ -55,22 +55,31 @@ function PotentialEvents() {
             <DisplayEvents events={qualifiedRegionalEvents}></DisplayEvents>
             <h3>Events you Qualify for</h3>
 
-            <DisplayEvents events={ qualifiedEvents }></DisplayEvents>
+            <DisplayEvents events={qualifiedEvents}></DisplayEvents>
             <h3>Events in your Region</h3>
 
             <DisplayEvents events={regionalEvents}></DisplayEvents>
         </div>
     );
 
-    function QualifiedRegionalEvents({ events }) {
-
-    }
     function DisplayEvents({ events }) {
 
-        function handleButtonClick(event) {
+        const [eventId, setEventId] = useState();
+
+        function handlePotentialTrainer(event) {
+            console.log("BUTTON CLICKEDDDDD");
             // add the trainer as a potential trainer
-            console.log("this should be the eventId" + event.target.value);
-            console.log("hello");
+            setEventId(event.targe.value);
+            
+            const postBody = {
+                // THE TRAINER EMAIL SHOULD BE REPLACED WITH THE SESSION OBJECT ON THE SERVER - OR ADD A TRAINERID TO THE DATABASE SCHEMA
+                eventId: eventId,
+                trainerEmail: "adam@email.com",
+            };
+
+            axios.post("http://localhost:4000/add-potential-trainer", postBody).then((result) => {
+                console.log("this should be the result" + result.data);
+            });
         }
 
         if (events.length == 0) {
@@ -83,7 +92,7 @@ function PotentialEvents() {
                 {events.map(regionalEvent => (
                     <div key={regionalEvent.eventId}>
                         <h6>{regionalEvent.additionalInformation}</h6>
-                        <button className="btn btn-primary" onClick={handleButtonClick} value={regionalEvent.eventId}>Sign up to be a potential trainer for this event.</button>
+                        <button className="btn btn-primary" onClick={ handlePotentialTrainer } value={regionalEvent.eventId}>Sign up to be a potential trainer for this event.</button>
 
                         <div className="alert alert-primary" hidden id="eventSelectedMessage">
                             You have submitted your availability. Your application will now be considered by our employees and you will be contacted if you are selected to carry out this event.
@@ -96,4 +105,4 @@ function PotentialEvents() {
     }
 }
 
-export default PotentialEvents
+export default PotentialEvents;

@@ -55,6 +55,9 @@ function PotentialTrainers() {
         <div>
             <h1>Potential Trainers</h1>
 
+            <h3>Trainers Available for this Event</h3>
+
+            {/* display and allow the trainer to select a trainer to carry out the event - this will then be added to the trainers calendar */}
             <h3>Qualified Trainers in the Region</h3>
 
             <h3>Qualified Trainers</h3>
