@@ -5,13 +5,14 @@ const getTrainer = require("./getTrainer");
 async function loginTrainer(trainerEmail, trainerPassword) {
     try {
         const trainerQuery = await getTrainer(trainerEmail);
-
-        if (compareHash(trainerPassword, trainerQuery[0].passwordHash)) {
+        console.log("this should be the password hash" + trainerQuery.passwordHash);
+        if (compareHash(trainerPassword, trainerQuery.passwordHash)) {
             return "sucessful login";
         } else {
             return "error occurred";
         }
     } catch (error) {
+        console.log(error);
         return "error occurred";
     }
 }

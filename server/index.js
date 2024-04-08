@@ -100,7 +100,6 @@ app.post("/login-employee", async (req, res) => {
 
         // one hour cookie
         res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
-
         res.send("successful login");
     } else {
         res.send("error occured");
@@ -120,7 +119,9 @@ app.post("/login-trainer", async (req, res) => {
 
         // one hour cookie
         res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
-
+        console.log("this should be the session cookie stored on the server " + req.session.user);
+        console.log("this should be the email of the employee logged into the system" + req.session.user.email);
+        
         res.send("successful login");
     } else {
         res.send("error occured");
