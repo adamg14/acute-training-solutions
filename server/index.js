@@ -33,6 +33,7 @@ const getEventByCourseRegion = require("./middleware/getEventsByCourseRegion");
 const getEventsByCourse = require("./middleware/getEventsByCourse");
 const getEventsByRegion = require("./middleware/getEventsByRegion");
 const addPotentialTrainer = require("./middleware/AddPotentialTrainer");
+const bookEvent = require("./middleware/bookEvent");
 
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -228,7 +229,7 @@ app.post("/add-trainer-course", async (req, res) => {
 app.post("/add-potential-trainer", async (req, res) => {
     // trainerEmail SHOULD EITHER COME FROM THE SESSION OBJECT OR ADD A TRAINER ID TO BE ADDED TO THE API ENDPOINT
     // WRITE A FUNCTION THAT CALCULATES THE DISTANCE BETWEEN TWO POSTCODES FOR THE THIRD ARGUMENT
-    const addPotentialTrainerResult = await addPotentialTrainer(req.body.eventId, req.body.trainerId, 1);
+    const addPotentialTrainerResult = await addPotentialTrainer(req.body.eventId, req.body.trainerId, req.body.distance);
     res.send(addPotentialTrainerResult);
 });
 
@@ -260,6 +261,15 @@ app.post("/get-trainer-region", async (req, res) => {
 
     res.send(trainerQueryResult);
 });
+
+
+// ADD THE AUTHENTICATETRAINER FUNCTION TO VERIFY
+app.post("/book-event", async (req, res) => {
+    // get the email of the employee from the session object
+    const bookEventResult = await bookEvent(req.body.eventId, req.body.trainerId, req.session.user.email);
+    res.send(bookEventResult);
+});
+
 app.post("/assign-event/:eventId/:trainerId", async (req, res) => {
     const assignEventResult = await assignEvent(req.body.eventId, req.body.trainerId, req.body.employeeEmail);
 

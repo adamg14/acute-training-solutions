@@ -12,43 +12,36 @@ function PotentialTrainers() {
 
     const [qualifiedTrainers, setQualifiedTrainers] = useState();
 
-    const [regionalTrainers, setRegionalTrainers] = useState();
+    const [regionalTrainers, setRegionalTrainers] = useState([]);
 
 
     useEffect(() => {
-        console.log(endpoint);
         const eventDetailsPostData = {
             eventId: endpoint
         };
 
-        const eventDetails = axios.post("http://localhost:4000/get-event", eventDetailsPostData).then((response) => {
-            const eventCourse = response.data.course[0];
-            const eventRegion = response.data.region;
+        axios.post("http://localhost:4000/get-event", eventDetailsPostData).then((response) => {
+            const eventCourse = response.data.course;
+            const eventRegion = response.data.eventRegion;
 
-            // get the data for the the trainers within the region who are qualified
-            // IF STATEMENTS TO DETERMINE IF ANY OF THE RESPONSES HAVE A LENGTH OF  ZERO
-            const qualifiedRegionalTrainersPostData = {
+            const postBody = {
                 course: eventCourse,
                 region: eventRegion
             };
 
-            const qualifiedTrainersPostData = {
-                course: eventCourse
-            };
-
-            const regionalTrainersPostData = {
-                region: eventRegion
-            };
-
-            const queryResult = response.data;
-
-            axios.post("http://localhost:4000/get-trainer-course", qualifiedTrainersPostData).then((response2) => {
-                const queryResult = response2.data;
+            axios.post("http://localhost:4000/get-trainer-region", postBody).then((result2) => {
 
 
-                axios.post("http://localhost:4000/get-trainer-region");
+                if (Array.isArray(result2.data) && result2.data.length >= 1) {
+                    setRegionalTrainers(result2.data);
+                } else {
+                    setRegionalTrainers("There are no current trainers that match these specifications.");
+                }
             });
+
+            // repeat this process for the two other types of candidates
         });
+
     });
 
     return (
@@ -57,14 +50,55 @@ function PotentialTrainers() {
 
             <h3>Trainers Available for this Event</h3>
 
-            {/* display and allow the trainer to select a trainer to carry out the event - this will then be added to the trainers calendar */}
             <h3>Qualified Trainers in the Region</h3>
+
+            {/* need to format these array variables using map  */}
+            {/* <p>{qualifiedTrainersRegion}</p> */}
 
             <h3>Qualified Trainers</h3>
 
+            {/* <p>{qualifiedTrainers}</p> */}
+
             <h3>Trainers within the Region</h3>
+
+            <PotentialTrainers potentialTrainers={regionalTrainers}></PotentialTrainers>
         </div>
-    )
+    );
+
+    function PotentialTrainers({ potentialTrainers }) {
+
+        async function handleTrainerButtonClicked(event) {
+            const postBody = {
+                eventId: endpoint,
+                trainerId: event.target.value
+            };
+
+            const serverResponse = (await axios.post("http://localhost:4000/book-event", postBody)).data;
+
+            // depending on the result of the booking of an event by the trainer: 
+            // REDIRECT THE TRAINER TO A SUCCESS PAGE WITH A HYPERLINK FOR THEM TO GO BACK TO THE TRAINER DASHBOARD
+        }
+
+        if (potentialTrainers === "There are no current trainers that match these specifications.") {
+            return (
+                <p>There are no current trainers that match these specifications.</p>
+            );
+        } else {
+            return (
+                <div>
+                    {potentialTrainers.map(potentialTrainer => (
+                        <div key={potentialTrainer.trainerId}>
+                            <hr />
+                            <p>Trainer Name: {potentialTrainer.trainerName}</p>
+                            <p>Trainer Email: {potentialTrainer.trainerEmail}</p>
+                            <button>Book Trainer</button>
+                            <hr />
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+    }
 }
 
 export default PotentialTrainers;

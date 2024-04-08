@@ -43,19 +43,6 @@ const eventSchema = mongoose.Schema({
         required: true
     },
 
-    potentialTrainers: [
-        {
-            trainerEmail: {
-                type: String,
-                required: true
-            },
-            
-            distance: {
-                type: Number,
-                required: true
-            }
-        }
-    ],
     
     selectedTrainer: {
         type: String
