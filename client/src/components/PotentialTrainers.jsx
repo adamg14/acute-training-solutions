@@ -86,15 +86,17 @@ function PotentialTrainers() {
         } else {
             return (
                 <div>
-                    {potentialTrainers.map(potentialTrainer => (
-                        <div key={potentialTrainer.trainerId}>
-                            <hr />
-                            <p>Trainer Name: {potentialTrainer.trainerName}</p>
-                            <p>Trainer Email: {potentialTrainer.trainerEmail}</p>
-                            <button>Book Trainer</button>
-                            <hr />
-                        </div>
-                    ))}
+                    {potentialTrainers.map(potentialTrainer => {
+                        return (
+                            <div key={potentialTrainer.trainerId}>
+                                <hr />
+                                <p>Trainer Name: {potentialTrainer.trainerName}</p>
+                                <p>Trainer Email: {potentialTrainer.trainerEmail}</p>
+                                <button onClick={handleTrainerButtonClicked}>Book Trainer</button>
+                                <hr />
+                            </div>
+                        );
+                    })}
                 </div>
             );
         }

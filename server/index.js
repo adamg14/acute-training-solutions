@@ -71,9 +71,10 @@ function authenticateEmployee() {
 
 app.post("/register-employee", async (req, res) => {
     try {
+        const employeeId = uuid.v4();
         const employeeEmail = req.body.employeeEmail;
         const employeePassword = passwordHashing(req.body.employeePassword);
-        const registerEmployeeResult = await registerEmployee(employeeEmail, employeePassword);
+        const registerEmployeeResult = await registerEmployee(employeeId, employeeEmail, employeePassword);
         res.send(registerEmployeeResult);
     } catch (error) {
         res.send("error occurred");
@@ -266,6 +267,7 @@ app.post("/get-trainer-region", async (req, res) => {
 
 // ADD THE AUTHENTICATETRAINER FUNCTION TO VERIFY
 app.post("/book-event", async (req, res) => {
+    console.log("this should be the session object" + req.session.user);
     // get the email of the employee from the session object
     const bookEventResult = await bookEvent(req.body.eventId, req.body.trainerId, req.session.user.email);
     res.send(bookEventResult);

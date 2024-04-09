@@ -5,6 +5,12 @@ const eventModel = require("./Event");
 mongoose.connect("mongodb+srv://adam:adam@cluster0.sc1aozc.mongodb.net/acute_training_solutions?retryWrites=true&w=majority&appName=Cluster0");
 
 const employeeSchema = mongoose.Schema({
+    employeeId: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    
     employeeEmail: {
         type: String,
         required: true,
