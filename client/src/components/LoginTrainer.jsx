@@ -15,7 +15,7 @@ function LoginTrainer() {
     // the useEffect hook constantly checks if the trainer has been authenticated - when they have been authenticated the user can access restricted routes and can be sent the dashboard
     useEffect(() => {
         if (authenticated) {
-            navigate("/trainer-home");
+            navigate("/trainer-dashboard");
         }
     });
 

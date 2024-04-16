@@ -34,7 +34,7 @@ const getEventsByCourse = require("./middleware/getEventsByCourse");
 const getEventsByRegion = require("./middleware/getEventsByRegion");
 const addPotentialTrainer = require("./middleware/AddPotentialTrainer");
 const bookEvent = require("./middleware/bookEvent");
-
+const viewTrainerEvents = require("./middleware/ViewTrainerEvents");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -246,7 +246,7 @@ app.post("/add-potential-trainer", authenticateTrainer, async (req, res) => {
 // only employees should be able to access this route because trainers should not be allowed to see information about other trainers - this is prevented in the web application by using authentication 
 app.post("/get-trainer", authenticateUser, async (req, res) => {
     // SHOULD GET THIS DATA FROM THE SESSION OBJECT FOR SECURITY REASONS
-    const databaseQuery = await getTrainer(req.body.trainerEmail);
+    const databaseQuery = await getTrainer(req.session.user.email);
     res.send(databaseQuery);
 });
 
@@ -311,6 +311,12 @@ app.get("/:eventId/potential-trainers", authenticateTrainer, async (req, res) =>
 
     // render both of these lists of canidates to the employee on the frontend - and allow them to selcted the trainer that is the most suitable for the event
     // ...
+});
+
+
+app.get("/view-trainer-events", authenticateTrainer, async (req, res) => {
+    const eventsResponse = viewTrainerEvents(req.session.user.email);
+    res.send(eventsResponse);
 });
 
 app.listen(PORT, () => {

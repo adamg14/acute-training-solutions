@@ -15,7 +15,7 @@ function EmployeeLogin() {
     // the useEffect hook constantly checks if the employee has been authenticated - when they have been authenticated the user can access restricted routes and can be sent the dashboard
     useEffect(() => {
         if (authenticated) {
-            navigate("/employee-home");
+            navigate("/employee-dashboard");
         }
     });
 

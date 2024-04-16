@@ -1,22 +1,15 @@
 import React from "react";
 
 
-function EmployeeHome(){
+function EmployeeDashboard(){
     return (
         <div>
-            <h1>Employee Home - Acute Training Solutions</h1>
+            <h1>Employee Dashboard - Acute Training Solutions</h1>
 
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand">Employee Home</a>
+                <a class="navbar-brand">Trainer Dashboard</a>
 
                 <ul className="navbar-nav">
-                    <li className="nav-item active" >
-                        <a href="/employee-login" className="nav-link active">Employee Login</a>
-                    </li>
-                    
-                    <li className="nav-item active" >
-                        <a href="/employee-register" className="nav-link active">Employee Register</a>
-                    </li>
 
                     <li className="nav-item active" >
                         <a href="/events" className="nav-link active">Upcoming Events</a>
@@ -43,4 +36,4 @@ function EmployeeHome(){
     )
 }
 
-export default EmployeeHome;
+export default EmployeeDashboard;

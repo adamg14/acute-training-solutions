@@ -18,7 +18,9 @@ import EventPage from './components/EventPage';
 import PotentialTrainers from './components/PotentialTrainers';
 import PotentialEvents from './components/PotentialEvents';
 import NotAuthenticated from './components/NotAuthenticated';
-
+import TrainerDashboard from "./components/TrainerDashboard";
+import TrainerEvents from './components/TrainerEvents';
+import EmployeeDashboard from './components/EmployeeDashboard';
 function App() {
   return (
     <div>
@@ -29,6 +31,7 @@ function App() {
           <Route path="/employee-login" element={<EmployeeLogin></EmployeeLogin>}></Route>
           <Route path="/employee-register" element={<EmployeeRegister></EmployeeRegister>}></Route>
           <Route path="/trainer-home" element={<TrainerHome></TrainerHome>} ></Route>
+          <Route path="/trainer-dashboard" element={<TrainerDashboard></TrainerDashboard>}></Route>
           <Route path="/employee-home" element={<EmployeeHome></EmployeeHome>} ></Route>
           <Route path="/admin-home" element={<AdminHome></AdminHome>} ></Route>
           <Route path="/add-event" element={<AddEvent></AddEvent>}></Route>
@@ -37,7 +40,9 @@ function App() {
           <Route path="/events" element={<Events></Events>}></Route>
           <Route path="event/:eventId" element={ <EventPage></EventPage>}></Route>
           <Route path="/event/potential-trainers/:eventId" element={ <PotentialTrainers></PotentialTrainers> }></Route>
-          <Route path="/events/:trainerId" element={ <PotentialEvents></PotentialEvents> }></Route>
+          <Route path="/potential-events" element={ <PotentialEvents></PotentialEvents> }></Route>
+          <Route path="/trainer-events" element={<TrainerEvents></TrainerEvents>}></Route>
+          <Route path='/employee-dashboard' element={<EmployeeDashboard></EmployeeDashboard>}></Route>
           <Route path="/not-authenticated" element={ <NotAuthenticated></NotAuthenticated> }></Route>
         </Routes>
       </Router>

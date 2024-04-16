@@ -6,27 +6,15 @@ function TrainerHome() {
             <h1>Trainer Home- Acute Training Solutions</h1>
 
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a class="navbar-brand">Trainer Dashboard</a>
+                <a class="navbar-brand">Trainer Home</a>
 
                 <ul className="navbar-nav">
                     <li className="nav-item active" >
-                        <a href="/trainer-home" className="nav-link active">My Events</a>
+                        <a href="/trainer-login" className="nav-link active">Trainer Login</a>
                     </li>
 
                     <li className="nav-item active">
-                        <a href="/employee-home" className="nav-link active">Upcoming Events</a>
-                    </li>
-
-                    <li className="nav-item active">
-                        <a href="/admin-home" className="nav-link active">Edit Details</a>
-                    </li>
-
-                    <li className="nav-item active">
-                        <a href="/admin-home" className="nav-link active">Change Password</a>
-                    </li>
-
-                    <li className="nav-item active">
-                        <a href="/admin-home" className="nav-link active">Add Qualifications</a>
+                        <a href="/trainer-register" className="nav-link active">Trainer Register</a>
                     </li>
                 </ul>
             </nav>

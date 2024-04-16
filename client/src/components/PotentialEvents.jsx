@@ -21,8 +21,6 @@ function PotentialEvents() {
     // NEED TO ADD A TRAINERID TO THE SCHEMA SO IT CAN BE USED AS AN ENDPOINT
     useEffect(() => {
         const postBody = {
-            // EDIT THIS KEY VALUE PAIR ONCE SCHEMA PROPERLY REEVALUATED
-            trainerEmail: "adam@email.com",
             course: course,
             region: region
         };
@@ -72,7 +70,6 @@ function PotentialEvents() {
         const [eventId, setEventId] = useState();
 
         function handlePotentialTrainer(event) {
-            console.log("BUTTON CLICKEDDDDD");
             // add the trainer as a potential trainer
             setEventId(event.targe.value);
             
