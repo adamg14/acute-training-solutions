@@ -4,10 +4,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 function PotentialEvents() {
 
     const location = useLocation();
+    const navigate = useNavigate();
     const pathname = location.pathname.slice(8, location.pathname.length);
 
     const [region, setRegion] = useState();
@@ -27,22 +28,26 @@ function PotentialEvents() {
         };
 
         // server request for details about the logged in trainer
-        axios.post("http://localhost:4000/get-trainer", postBody).then((result) => {
-            setRegion(result.data.trainerRegion);
-            setCourse(result.data.trainerCourse);
+        axios.post("http://localhost:4000/get-trainer", postBody, {withCredentials: true}).then((result) => {
+            if(result.data === "not authenticated"){
+                navigate("/not-authenticated");
+            }else{
+                setRegion(result.data.trainerRegion);
+                setCourse(result.data.trainerCourse);
 
-            // get the courses the trainer is qualified to do within their region
-            axios.post("http://localhost:4000/get-events-course-region", postBody).then((result2) => {
-                setQualifiedRegionalEvents(result2.data);
-                // get the courses that the trainer is qualified for
-                axios.post("http://localhost:4000/get-events-course", postBody).then((result3) => {
+                // get the courses the trainer is qualified to do within their region
+                axios.post("http://localhost:4000/get-events-course-region", postBody, {withCredentials: true}).then((result2) => {
+                    setQualifiedRegionalEvents(result2.data);
+                    // get the courses that the trainer is qualified for
+                    axios.post("http://localhost:4000/get-events-course", postBody, {withCredentials: true}).then((result3) => {
                     setQualifiedEvents(result3.data);
-                    axios.post("http://localhost:4000/get-events-region", postBody).then((result4) => {
+                    axios.post("http://localhost:4000/get-events-region", postBody, {withCredentials: true}).then((result4) => {
                         setRegionalEvents(result4.data);
                     });
 
                 });
             });
+            }
         });
     });
 

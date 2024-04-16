@@ -59,19 +59,24 @@ app.use(expressSession({
 
 app.use(cookieParser());
 
+// for routes that only trainer can access - employees should not access these routes
 function authenticateTrainer(req, res, next) {
-    // add more authentication conditions
-    if (req.session && req.session.user.role == "trainer") {
-        next();
-    } else {
-        // this redirect may not work
+    try {
+        if (req.session.user.email != null && req.session.user.role == "Trainer"){
+            next();
+        }else{
+            res.send("not authenticated");
+        }
+    } catch (error) {
+        // if there is no session object
         res.send("not authenticated");
     }
 }
 
+// for routes that only employees can access - employees should not access these routes
 function authenticateEmployee(req, res, next) {
     try {
-        if (req.session.user.email != false){
+        if (req.session.user.email != null && req.session.user.role == "Employee"){
             next();
         }else{
             res.send("not authenicated");
@@ -79,11 +84,20 @@ function authenticateEmployee(req, res, next) {
     } catch (error) {
         res.send("not authenticated");
     }
-    console.log(req.body)
-    console.log("AUTHENTICATION FUNCTION" + req.session);
-    console.log(req.session);
 }
 
+// for routes which both - still must be authenticated as a valid user of the web application to access the route
+function authenticateUser(req, res, next){
+    try {
+        if (req.session.user.email != null){
+            next();
+        }else{
+            res.send("not authenticated");
+        }
+    } catch (error) {
+        res.send("not authenticated");
+    }
+}
 
 app.post("/register-employee", async (req, res) => {
     try {
@@ -116,10 +130,6 @@ app.post("/login-employee", async (req, res) => {
             role: "Employee"
         };
 
-        console.log("this should be the session object");
-        console.log(req.session);
-        console.log("session object successfully set");
-
         res.send("successful login");
     } else {
         res.send("error occurred");
@@ -137,10 +147,6 @@ app.post("/login-trainer", async (req, res) => {
             role: "Trainer"
         };
 
-        // one hour cookie
-        // res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
-        console.log("this should be the session cookie stored on the server " + req.session.user);
-        console.log("this should be the email of the employee logged into the system" + req.session.user.email);
         
         res.send("successful login");
     } else {
@@ -154,28 +160,27 @@ app.get("/get-events", authenticateEmployee, async (req, res) => {
     res.send(events);
 });
 
-// get Event for the individual get Event page
-app.post("/get-event", async (req, res) => {
+app.post("/get-event", authenticateUser ,async (req, res) => {
     const getEventResult = await getEvent(req.body.eventId);
     res.send(getEventResult);
 });
 
-app.post("/get-events-course-region", async (req, res) => {
+app.post("/get-events-course-region", authenticateTrainer, async (req, res) => {
     const getEventsResult = await getEventByCourseRegion(req.body.course, req.body.region);
     res.send(getEventsResult);
 });
 
-app.post("/get-events-course", async (req, res) => {
+app.post("/get-events-course", authenticateTrainer ,async (req, res) => {
     const getEventsResult = await getEventsByCourse(req.body.course);
     res.send(getEventsResult);
 });
 
-app.post("/get-events-region", async (req, res) => {
+app.post("/get-events-region", authenticateTrainer, async (req, res) => {
     const getEventsResult = await getEventsByRegion(req.body.region);
     res.send(getEventsResult);
 });
 
-app.post("/edit-trainer-password", async (req, res) => {
+app.post("/edit-trainer-password", authenticateTrainer, async (req, res) => {
     // get the email of the trainer from the session that is sending a request to this route
     const trainerEmail = req.session.user.email;
     const newPassword = req.body.newPassword;
@@ -186,7 +191,7 @@ app.post("/edit-trainer-password", async (req, res) => {
 });
 
 
-app.post("/edit-employee-password", async (req, res) => {
+app.post("/edit-employee-password", authenticateEmployee,async (req, res) => {
     const employeeEmail = req.session.user.email;
     const newPassword = req.body.newPassword;
 
@@ -196,22 +201,17 @@ app.post("/edit-employee-password", async (req, res) => {
     res.send(editPasswordResult);
 });
 
-app.post("/add-course", async (req, res) => {
+app.post("/add-course", authenticateEmployee ,async (req, res) => {
     const addCourseResult = await addCourse(req.body.courseId, req.body.courseName, req.body.sharepointURL);
     res.send(addCourseResult);
 });
 
-app.post("/edit-course/:courseId", async (req, res) => {
+app.post("/edit-course/:courseId", authenticateEmployee, async (req, res) => {
     // create a function for this route 
 });
 
-// no longer need this course
-app.post("/add-employee", async (req, res) => {
-    const addEmployeeResult = await addEmployee(req.body.employeeEmail, req.body.employeeName);
-    res.send(addEmployeeResult);
-});
 
-app.post("/add-event", async (req, res) => {
+app.post("/add-event", authenticateEmployee, async (req, res) => {
     // generate an id for an event
     const eventId = uuid.v4();
 
@@ -234,41 +234,30 @@ app.post("/add-event", async (req, res) => {
     }
 });
 
-// no longer need this route
-app.post("/add-trainer", async (req, res) => {
-    const addTrainerResult = await addTrainer(req.body.trainerEmail, req.body.trainerCourse, req.body.trainerName, req.body.trainerPostcode, req.body.trainerRegion, req.body.passwordHash);
 
-    res.send(addTrainerResult);
-});
 
-// no longer need this route
-app.post("/add-trainer-course", async (req, res) => {
-    const addTrainerCourseResult = await addTrainerCourse(req.body.courseId, req.body.trainerEmail);
-
-    res.send(addTrainerCourseResult);
-});
-
-app.post("/add-potential-trainer", async (req, res) => {
+app.post("/add-potential-trainer", authenticateTrainer, async (req, res) => {
     // trainerEmail SHOULD EITHER COME FROM THE SESSION OBJECT OR ADD A TRAINER ID TO BE ADDED TO THE API ENDPOINT
     // WRITE A FUNCTION THAT CALCULATES THE DISTANCE BETWEEN TWO POSTCODES FOR THE THIRD ARGUMENT
     const addPotentialTrainerResult = await addPotentialTrainer(req.body.eventId, req.body.trainerId, req.body.distance);
     res.send(addPotentialTrainerResult);
 });
 
-app.post("/get-trainer", async (req, res) => {
+// only employees should be able to access this route because trainers should not be allowed to see information about other trainers - this is prevented in the web application by using authentication 
+app.post("/get-trainer", authenticateUser, async (req, res) => {
     // SHOULD GET THIS DATA FROM THE SESSION OBJECT FOR SECURITY REASONS
     const databaseQuery = await getTrainer(req.body.trainerEmail);
     res.send(databaseQuery);
 });
 
-app.post("/get-trainer-course-region", async (req, res) => {
+app.post("/get-trainer-course-region", authenticateEmployee, async (req, res) => {
     const course = req.body.course;
     const region = req.body.region;
     const trainerQueryResult = await getTrainerByCourseRegion(course, region);
     res.send(trainerQueryResult);
 });
 
-app.post("/get-trainer-course", async (req, res) => {
+app.post("/get-trainer-course", authenticateEmployee, async (req, res) => {
     const course = req.body.course;
 
     const trainerQueryResult = await getTrainerByCourse(course);
@@ -276,7 +265,7 @@ app.post("/get-trainer-course", async (req, res) => {
     res.send(trainerQueryResult);
 });
 
-app.post("/get-trainer-region", async (req, res) => {
+app.post("/get-trainer-region", authenticateEmployee, async (req, res) => {
     const region = req.body.region;
 
     const trainerQueryResult = await getTrainerByRegion(region);
@@ -285,27 +274,29 @@ app.post("/get-trainer-region", async (req, res) => {
 });
 
 
-// ADD THE AUTHENTICATETRAINER FUNCTION TO VERIFY
-app.post("/book-event", async (req, res) => {
+
+app.post("/book-event", authenticateEmployee, async (req, res) => {
     console.log("this should be the session object" + req.session.user);
     // get the email of the employee from the session object
     const bookEventResult = await bookEvent(req.body.eventId, req.body.trainerId, req.session.user.email);
     res.send(bookEventResult);
 });
 
-app.post("/assign-event/:eventId/:trainerId", async (req, res) => {
+// double check the authentication for this route
+app.post("/assign-event/:eventId/:trainerId", authenticateUser, async (req, res) => {
     const assignEventResult = await assignEvent(req.body.eventId, req.body.trainerId, req.body.employeeEmail);
 
     res.send(assignEventResult);
 });
 
-app.post("/findEvent", async (req, res) => {
+
+app.post("/findEvent", authenticateUser,async (req, res) => {
     const findEventResult = await findEvent(req.body.eventId);
 
     res.send(findEventResult);
 });
 
-app.get("/:eventId/potential-trainers", async (req, res) => {
+app.get("/:eventId/potential-trainers", authenticateTrainer, async (req, res) => {
     // render the potential trainers for a specific event to the employee
     const selectedEvent = await findEvent(req.params.eventId);
 

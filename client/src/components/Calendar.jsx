@@ -2,10 +2,11 @@ import React from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { useNavigate } from "react-router-dom";
 
 function EventsCalendar(){
     const localizer = momentLocalizer(moment);
-
+    const navigate = useNavigate();
     const trainerEvents = [
         {
             start: new Date(2024, 1, 8, 12, 30),

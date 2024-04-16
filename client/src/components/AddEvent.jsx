@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 
 function AddEvent() {
 
@@ -12,6 +12,7 @@ function AddEvent() {
     const [time, setTime] = useState();
     const [region, setRegion] = useState();
     const [postcode, setPostcode] = useState();
+    const navigate = useNavigate();
 
     async function handleFormSubmission(event) {
         event.preventDefault();
@@ -38,7 +39,13 @@ function AddEvent() {
             }
 
             console.log("sending data to server");
-            await axios.post("http://localhost:4000/add-event", postData);
+            const addEventResponse = (await axios.post("http://localhost:4000/add-event", postData, {withCredentials: true})).data;
+
+            if (addEventResponse == "not authenticated"){
+                navigate("/not-authenticated");
+            }else{
+                // redirect to the trainer dashboard - do this once the web application routes have been reconfigured
+            }
         }
     }
 

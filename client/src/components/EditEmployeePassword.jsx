@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 
 function EditEmployeePassword() {
+
+    const navigate = useNavigate();
 
     const [passwordInput, setPasswordInput] = useState();
     const [confirmPasswordInput, setConfirmPasswordInput] = useState();
@@ -26,12 +28,14 @@ function EditEmployeePassword() {
                 newPassword: passwordInput
             };
 
-            const editPasswordResponse = await axios.post("/edit-employee-password", postData).data;
+            const editPasswordResponse = await axios.post("http://localhost:4000/edit-employee-password", postData, {withCredentials: true}).data;
 
             if (editPasswordResponse === "Employee record successfully updated"){
                 document.getElementById("failure-message").setAttribute("hidden", true);
                 setSuccessMessage("Your password has sucessfully been changed");
                 document.getElementById("sucess-message").removeAttribute("hidden");
+            }else if(editPasswordResponse === "not authenticated"){
+                navigate("/not-authenticated");
             }else{
                 document.getElementById("sucess-message").setAttribute("hidden", true);
                 setFailureMessage("An error occurred. Please try again, ensuring you are logged in.");

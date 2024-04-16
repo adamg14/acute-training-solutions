@@ -24,7 +24,7 @@ function EventPage() {
             eventId: eventId
         };
 
-        axios.post("http://localhost:4000/get-event", postData).then((result) => {
+        axios.post("http://localhost:4000/get-event", postData, {withCredentials: true}).then((result) => {
             console.log(result.data);
             setEventDetails(result.data);
             setAdditionalInformation(result.data.additionalInformation);

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 function PotentialTrainers() {
 
     const location = useLocation();
+    const navigate = useNavigate();
     const endpoint = location.pathname.slice(26, location.pathname.length);
 
     const [eventDetails, setEventDetails] = useState();
@@ -20,16 +21,19 @@ function PotentialTrainers() {
             eventId: endpoint
         };
 
-        axios.post("http://localhost:4000/get-event", eventDetailsPostData).then((response) => {
-            const eventCourse = response.data.course;
-            const eventRegion = response.data.eventRegion;
+        axios.post("http://localhost:4000/get-event", eventDetailsPostData, {withCredentials: true}).then((response) => {
+            if (response.data === "not authenticated"){
+                navigate("/not-authenticated");
+            }else{
+                const eventCourse = response.data.course;
+                const eventRegion = response.data.eventRegion;
 
-            const postBody = {
-                course: eventCourse,
-                region: eventRegion
-            };
+                const postBody = {
+                    course: eventCourse,
+                    region: eventRegion
+                };
 
-            axios.post("http://localhost:4000/get-trainer-region", postBody).then((result2) => {
+                axios.post("http://localhost:4000/get-trainer-region", postBody, {withCredentials: true}).then((result2) => {
 
 
                 if (Array.isArray(result2.data) && result2.data.length >= 1) {
@@ -37,9 +41,27 @@ function PotentialTrainers() {
                 } else {
                     setRegionalTrainers("There are no current trainers that match these specifications.");
                 }
-            });
 
-            // repeat this process for the two other types of candidates
+                });
+
+                axios.post("http://localhost:4000/get-trainer-course-region", postBody, {withCredentials: true}).then((result3) => {
+                    if (Array.isArray(result3.data) && result3.data.length >= 1){
+                        setQualifiedTrainersRegion(result3.data);
+                    }else{
+                        setQualifiedTrainersRegion("There are no current trainers that match these specifications.");
+                    }
+                });
+
+                axios.post("http://localhost:4000/get-trainer-course", postBody, {withCredentials: true}).then((result4) =>{
+                    if (Array.isArray(result4.data) && result4.data.length >= 1){
+                        setQualifiedTrainers(result4.data);
+                    }else{
+                        setQualifiedTrainers("There are no current trainers that match these specifications")
+                    }
+                });
+            }
+
+            // REPEAT THIS FOR THE NEXT TWO KINDS OF CANDIDATES
         });
 
     });
@@ -73,10 +95,10 @@ function PotentialTrainers() {
                 trainerId: event.target.value
             };
 
-            const serverResponse = (await axios.post("http://localhost:4000/book-event", postBody)).data;
+            const serverResponse = (await axios.post("http://localhost:4000/book-event", postBody, {withCredentials: true})).data;
 
             // depending on the result of the booking of an event by the trainer: 
-            // REDIRECT THE TRAINER TO A SUCCESS PAGE WITH A HYPERLINK FOR THEM TO GO BACK TO THE TRAINER DASHBOARD
+            // redirect the employee to the dashboard once routes have been reconfigured
         }
 
         if (potentialTrainers === "There are no current trainers that match these specifications.") {

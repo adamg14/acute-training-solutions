@@ -28,7 +28,7 @@ function LoginTrainer() {
                 trainerPassword: passwordInput
             };
 
-            const trainerLoginResult = (await axios.post("http://localhost:4000/login-trainer", postData)).data;
+            const trainerLoginResult = (await axios.post("http://localhost:4000/login-trainer", postData, {withCredentials: true})).data;
 
             console.log(trainerLoginResult);
 
