@@ -38,34 +38,50 @@ const bookEvent = require("./middleware/bookEvent");
 
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+
+const corsOptions = {
+    origin: "http://localhost:3000",
+    credentials: true
+};
+
+app.use(cors(corsOptions));
+
 app.use(expressSession({
     secret: "secret-key",
     resave: false,
     saveUninitialized: true,
     cookie: {
-        secure: false
+        httpOnly: true,
+        secure: false,
+        maxAge: 600000
     }
 }));
+
 app.use(cookieParser());
 
 function authenticateTrainer(req, res, next) {
     // add more authentication conditions
-    if (req.session && req.session.role == "trainer") {
+    if (req.session && req.session.user.role == "trainer") {
         next();
     } else {
         // this redirect may not work
-        res.redirect("/register-employee");
+        res.send("not authenticated");
     }
 }
 
-function authenticateEmployee() {
-    if (req.session && req.session.role == "employee") {
-        next();
-    } else {
-        // this redirect may not work
-        res.redirect("/register-employee");
+function authenticateEmployee(req, res, next) {
+    try {
+        if (req.session.user.email != false){
+            next();
+        }else{
+            res.send("not authenicated");
+        }
+    } catch (error) {
+        res.send("not authenticated");
     }
+    console.log(req.body)
+    console.log("AUTHENTICATION FUNCTION" + req.session);
+    console.log(req.session);
 }
 
 
@@ -94,16 +110,19 @@ app.post("/login-employee", async (req, res) => {
     const correctCredentials = await loginEmployee(employeeEmail, employeePassword);
 
     if (correctCredentials === "successful login") {
+
         req.session.user = {
             email: employeeEmail,
             role: "Employee"
         };
 
-        // one hour cookie
-        res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
+        console.log("this should be the session object");
+        console.log(req.session);
+        console.log("session object successfully set");
+
         res.send("successful login");
     } else {
-        res.send("error occured");
+        res.send("error occurred");
     }
 });
 
@@ -119,7 +138,7 @@ app.post("/login-trainer", async (req, res) => {
         };
 
         // one hour cookie
-        res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
+        // res.cookie("sessionId", req.sessionID, { maxAge: 600 * 1000 });
         console.log("this should be the session cookie stored on the server " + req.session.user);
         console.log("this should be the email of the employee logged into the system" + req.session.user.email);
         
@@ -129,7 +148,8 @@ app.post("/login-trainer", async (req, res) => {
     }
 });
 
-app.get("/get-events", async (req, res) => {
+app.get("/get-events", authenticateEmployee, async (req, res) => {
+    console.log("this should be the user object " + req.session.user);
     const events = await getEvents();
     res.send(events);
 });

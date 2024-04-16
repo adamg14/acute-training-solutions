@@ -17,6 +17,7 @@ import Events from './components/Events';
 import EventPage from './components/EventPage';
 import PotentialTrainers from './components/PotentialTrainers';
 import PotentialEvents from './components/PotentialEvents';
+import NotAuthenticated from './components/NotAuthenticated';
 
 function App() {
   return (
@@ -35,8 +36,9 @@ function App() {
           <Route path="/trainer-login" element={<LoginTrainer></LoginTrainer>}></Route>
           <Route path="/events" element={<Events></Events>}></Route>
           <Route path="event/:eventId" element={ <EventPage></EventPage>}></Route>
-          <Route path="/event/potential-trainers/:employeeId/:eventId" element={ <PotentialTrainers></PotentialTrainers> }></Route>
+          <Route path="/event/potential-trainers/:eventId" element={ <PotentialTrainers></PotentialTrainers> }></Route>
           <Route path="/events/:trainerId" element={ <PotentialEvents></PotentialEvents> }></Route>
+          <Route path="/not-authenticated" element={ <NotAuthenticated></NotAuthenticated> }></Route>
         </Routes>
       </Router>
     </div>

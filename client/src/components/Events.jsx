@@ -4,10 +4,18 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 function Events() {
     const [events, setEvents] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("http://localhost:4000/get-events").then((result) => {
-            setEvents(result.data);
+        axios.get("http://localhost:4000/get-events", {withCredentials: true}).then((result) => {
+            console.log("this is the data returned by the server " + result.data);
+            if (result.data === "not authenticated"){
+                navigate("/not-authenticated");
+            }else{
+                setEvents(result.data);
+            }
+        }).catch((error) => {
+            console.log("this is the error " + error);
         });
     });
 

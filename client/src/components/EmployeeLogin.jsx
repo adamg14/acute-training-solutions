@@ -29,7 +29,7 @@ function EmployeeLogin() {
                 employeePassword: passwordInput
             };
 
-            const loginResult = (await axios.post("http://localhost:4000/login-employee", postData)).data;
+            const loginResult = (await axios.post("http://localhost:4000/login-employee", postData, { withCredentials: true })).data;
 
             if (loginResult === "successful login") {
                 setAuthenticated(true);
